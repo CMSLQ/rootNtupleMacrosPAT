@@ -1,0 +1,7 @@
+The src directory of this area should contain the macros to analyze
+the rootNtuples produced by the /UserCode/Leptoquarks/RootTupleMakerPAT.
+
+These macros need the package /UserCode/Leptoquarks/rootNtupleAnalyzerPAT,
+see the README file in
+http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/Leptoquarks/rootNtupleAnalyzerPAT/
+and in particular Note2 at the end of the file.
