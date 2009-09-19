@@ -8,7 +8,7 @@
 #include <TVector2.h>
 #include <TVector3.h>
 
-analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, TString * outputFileName, string * cutEfficFile)
+analysisClass::analysisClass(string * inputList, string * cutFile, string * treeName, string * outputFileName, string * cutEfficFile)
   :baseClass(inputList, cutFile, treeName, outputFileName, cutEfficFile)
 {
   std::cout << "analysisClass::analysisClass(): begins " << std::endl;
@@ -32,7 +32,9 @@ void analysisClass::Loop()
    //////////book histos here
 
    //Combinations
-   TH1F *h_Mej = new TH1F ("Mej","Mej",200,0,2000);  h_Mej->Sumw2();
+   //TH1F *h_Mej = new TH1F ("Mej","Mej",200,0,2000);  h_Mej->Sumw2();
+   TH2F *h2_Mej_MTnuj_good = new TH2F ("h2_Mej_MTnuj_good","h2_Mej_MTnuj_good",100,0,2000,100,0,2000);  
+   TH2F *h2_Mej_MTnuj_bad = new TH2F ("h2_Mej_MTnuj_bad","h2_Mej_MTnuj_bad",100,0,2000,100,0,2000);  
 
    /////////initialize variables
 
@@ -187,6 +189,10 @@ void analysisClass::Loop()
      
      // Set the value of the variableNames listed in the cutFile to their current value
 
+     // DeltaPhiMET1stJet     0.35	   +inf			-		-		6	100 -4	4	
+     // DeltaPhiMET2ndJet     0.35	   +inf			-		-		6	100 -4	4	
+     // DeltaPhiMETEle	      0.7	   +inf			-		-		6	100 -4	4	
+
      //cout << "HLT" << endl;
 
      //## HLT
@@ -221,6 +227,7 @@ void analysisClass::Loop()
        {
 	 fillVariableWithValue( "Pt1stEle_IDISO_NoOvrlp", elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] );
 	 fillVariableWithValue( "Eta1stEle_IDISO_NoOvrlp", eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] );
+	 fillVariableWithValue( "mEta1stEle_IDISO_NoOvrlp", fabs(eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]) );
 
 	 // DeltaPhi - MET vs 1st ele
 	 TVector2 v_MET;
@@ -228,11 +235,11 @@ void analysisClass::Loop()
 	 v_MET.SetMagPhi(1,caloMETPhi);
 	 v_ele.SetMagPhi(1,elePhi[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]);	 
 	 float deltaphi = v_MET.DeltaPhi(v_ele);
-	 //fillVariableWithValue( "DeltaPhiMETEle", fabs(deltaphi) );
+	 fillVariableWithValue( "mDeltaPhiMETEle", fabs(deltaphi) );
 
 	 // transverse mass
 	 double MT = sqrt(2 * elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] * caloMET * (1 - cos(deltaphi)) );
-	 fillVariableWithValue( "MT", MT);
+	 fillVariableWithValue("MT", MT);
 
        }
 
@@ -242,14 +249,15 @@ void analysisClass::Loop()
        {
 	 fillVariableWithValue( "Pt1stJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]] );
 	 fillVariableWithValue( "Eta1stJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapEle[0]] );
+	 fillVariableWithValue( "mEta1stJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapEle[0]]) );
 
-	 // 	 //DeltaPhi - MET vs 1st jet
-	 // 	 TVector2 v_MET;
-	 // 	 TVector2 v_jet;
-	 // 	 v_MET.SetMagPhi(1,METPhi);
-	 // 	 v_jet.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[0]]);
-	 // 	 float deltaphi = v_MET.DeltaPhi(v_jet);
-	 // 	 fillVariableWithValue( "DeltaPhiMET1stJet", fabs(deltaphi) );
+	 //DeltaPhi - MET vs 1st jet
+	 TVector2 v_MET;
+	 TVector2 v_jet;
+	 v_MET.SetMagPhi(1,caloMETPhi);
+	 v_jet.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[0]]);
+	 float deltaphi = v_MET.DeltaPhi(v_jet);
+	 fillVariableWithValue( "mDeltaPhiMET1stJet", fabs(deltaphi) );
        }
 
 
@@ -259,15 +267,15 @@ void analysisClass::Loop()
        {
 	 fillVariableWithValue( "Pt2ndJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]] );
 	 fillVariableWithValue( "Eta2ndJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]] );
+	 fillVariableWithValue( "mEta2ndJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]]) );
 
-	 // 	 //DeltaPhi - MET vs 2nd jet
-	 // 	 TVector2 v_MET;
-	 // 	 TVector2 v_jet;
-	 // 	 v_MET.SetMagPhi(1,METPhi);
-	 // 	 v_jet.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[1]]);	 
-	 // 	 float deltaphi = v_MET.DeltaPhi(v_jet);
-	 // 	 fillVariableWithValue( "DeltaPhiMET2ndJet", fabs(deltaphi) );
-
+	 //DeltaPhi - MET vs 2nd jet
+	 TVector2 v_MET;
+	 TVector2 v_jet;
+	 v_MET.SetMagPhi(1,caloMETPhi);
+	 v_jet.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[1]]);
+	 float deltaphi = v_MET.DeltaPhi(v_jet);
+	 fillVariableWithValue( "mDeltaPhiMET2ndJet", fabs(deltaphi) );
        }
 
      //## define "2ele" and "2jets" booleans
@@ -281,10 +289,6 @@ void analysisClass::Loop()
      //## caloMET
      fillVariableWithValue("caloMET", caloMET);
 
-     // DeltaPhiMET1stJet     0.35	   +inf			-		-		6	100 -4	4	
-     // DeltaPhiMET2ndJet     0.35	   +inf			-		-		6	100 -4	4	
-     // DeltaPhiMETEle	      0.7	   +inf			-		-		6	100 -4	4	
-
      //## ST
      if ( (OneEle) && (TwoJets) ) 
        {
@@ -297,8 +301,7 @@ void analysisClass::Loop()
        }
 
      //cout << "Mej" << endl;
-
-
+     /*
      //## Mej 
      double M1, M2 = -999;
      if ( (OneEle) && (TwoJets) ) 
@@ -328,24 +331,96 @@ void analysisClass::Loop()
 	   {
 	     fillVariableWithValue("MejMax", M2);	       
 	     fillVariableWithValue("MejMin", M1);
-	   }
-	 
+	   }	 
        }
+     */
+     
+     //cout << "Mej, MTnuj" << endl;
 
+     //## Mej , MTnuj
+     double Me1j1, Me1j2, MTn1j1, MTn1j2 = -999;
+     double diff_e1j1_n1j2, diff_e1j2_n1j1;
+     //used later for 2D histograms
+     double good_Mej, good_MTnuj = -999;
+     double bad_Mej, bad_MTnuj = -999;
+     if ( (OneEle) && (TwoJets) )  
+       {
+	 //invariant mass electron-jet
+ 	 TLorentzVector jet1, jet2, ele1;
+	 ele1.SetPtEtaPhiM(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],
+			   eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],
+			   elePhi[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],0);
+	 jet1.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]],
+			   caloJetEta[v_idx_jet_PtCut_noOverlapEle[0]],
+			   caloJetPhi[v_idx_jet_PtCut_noOverlapEle[0]],0);
+	 jet2.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]],
+			   caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]],
+			   caloJetPhi[v_idx_jet_PtCut_noOverlapEle[1]],0);
+	 TLorentzVector jet1ele1, jet2ele1, jet1nu1, jet2nu1;
+	 jet1ele1 = jet1 + ele1;
+	 jet2ele1 = jet2 + ele1;
+	 Me1j1 = jet1ele1.M();
+	 Me1j2 = jet2ele1.M();
+	 
+	 //transverse mass neutrino-jet
+	 TVector2 v_MET;
+	 TVector2 v_jet1;
+	 TVector2 v_jet2;
+	 v_MET.SetMagPhi(1,caloMETPhi);
+	 v_jet1.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[0]]);
+	 v_jet2.SetMagPhi(1,caloJetPhi[v_idx_jet_PtCut_noOverlapEle[1]]);
+	 float deltaphi1 = v_MET.DeltaPhi(v_jet1);
+	 float deltaphi2 = v_MET.DeltaPhi(v_jet2);
+	 double MTn1j1 = sqrt(2 * caloMET * caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]] * (1 - cos(deltaphi1)) );
+	 double MTn1j2 = sqrt(2 * caloMET * caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]] * (1 - cos(deltaphi2)) );
+
+	 //cout << "Me1j1:  " << Me1j1 << "  Me1j2:  " << Me1j2 << "  MTn1j1:  " << MTn1j1 << "  MTn1j2:  " << MTn1j2 << endl;
+
+	 diff_e1j1_n1j2 = fabs( Me1j1 - MTn1j2 );
+	 diff_e1j2_n1j1 = fabs( Me1j2 - MTn1j1);
+
+	 if ( diff_e1j1_n1j2 < diff_e1j2_n1j1 ) 
+	   {
+	     fillVariableWithValue("Mej", Me1j1);	       
+	     fillVariableWithValue("MTnuj", MTn1j2);
+
+	     //used later for 2D histograms
+	     good_Mej = Me1j1;
+	     good_MTnuj = MTn1j2;
+	     bad_Mej = Me1j2; 
+	     bad_MTnuj = MTn1j1;
+
+	   }
+	 else 
+	   {
+	     fillVariableWithValue("Mej", Me1j2);	       
+	     fillVariableWithValue("MTnuj", MTn1j1);
+
+	     //used later for 2D histograms
+	     good_Mej = Me1j2; 
+	     good_MTnuj = MTn1j1;
+	     bad_Mej = Me1j1;
+	     bad_MTnuj = MTn1j2;
+
+	   }
+
+       }
+     
      
      //--------------------------------------------------
-
+     
      // Evaluate cuts (but do not apply them)
      evaluateCuts();
 
      // Fill histograms and do analysis based on cut evaluation
 
-     if( passedCut("all") )
+
+     if( passedCut("all") ) 
        {
-	 h_Mej->Fill(M1);
-	 h_Mej->Fill(M2);
+	 h2_Mej_MTnuj_good->Fill(good_Mej,good_MTnuj);
+	 h2_Mej_MTnuj_bad->Fill(bad_Mej,bad_MTnuj);
        }
-     
+
      // reject events that did not pass level 0 cuts
      // if( !passedCut("0") ) continue;
      // ......
@@ -365,7 +440,9 @@ void analysisClass::Loop()
    } // End loop over events
 
    //////////write histos 
-   h_Mej->Write();
+   //h_Mej->Write();
+   h2_Mej_MTnuj_good->Write();
+   h2_Mej_MTnuj_bad->Write();	 
 
    std::cout << "analysisClass::Loop() ends" <<std::endl;   
 }
