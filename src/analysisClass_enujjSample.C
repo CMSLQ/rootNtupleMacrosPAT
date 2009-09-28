@@ -223,6 +223,7 @@ void analysisClass::Loop()
 
      //cout << "1st Ele" << endl;
      //## 1st ele
+     double MT=-999;
      if( v_idx_ele_PtCut_ID_ISO_noOverlap.size() >= 1 ) 
        {
 	 fillVariableWithValue( "Pt1stEle_IDISO_NoOvrlp", elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] );
@@ -238,7 +239,7 @@ void analysisClass::Loop()
 	 fillVariableWithValue( "mDeltaPhiMETEle", fabs(deltaphi) );
 
 	 // transverse mass
-	 double MT = sqrt(2 * elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] * caloMET * (1 - cos(deltaphi)) );
+	 MT = sqrt(2 * elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] * caloMET * (1 - cos(deltaphi)) );
 	 fillVariableWithValue("MT", MT);
 
        }
@@ -290,9 +291,10 @@ void analysisClass::Loop()
      fillVariableWithValue("caloMET", caloMET);
 
      //## ST
+     double calc_sT=-999.; 
      if ( (OneEle) && (TwoJets) ) 
        {
-	 double calc_sT = 
+	 calc_sT = 
 	   elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]
 	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]]
 	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]]
@@ -419,6 +421,13 @@ void analysisClass::Loop()
        {
 	 h2_Mej_MTnuj_good->Fill(good_Mej,good_MTnuj);
 	 h2_Mej_MTnuj_bad->Fill(bad_Mej,bad_MTnuj);
+
+	 // 	 //print out
+	 // 	 cout << "jentry" << jentry << endl;
+	 // 	 Show(jentry);	 
+	 // 	 cout << "calc_sT: " << calc_sT << endl;
+	 // 	 cout << "MT: " << MT << endl;
+
        }
 
      // reject events that did not pass level 0 cuts
