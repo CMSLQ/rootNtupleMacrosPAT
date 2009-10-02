@@ -86,7 +86,9 @@ void analysisClass::Loop()
      vector<int> v_idx_ele_PtCut;
      vector<int> v_idx_ele_PtCut_ID_ISO_noOverlap;
 
-     for(int iele=0;iele<eleCount;iele++)
+     int eleIDType = getPreCutValue1("eleType");
+
+    for(int iele=0;iele<eleCount;iele++)
        {
 
 	 //no cut on reco electrons
@@ -107,9 +109,9 @@ void analysisClass::Loop()
 	 // 	     ( fabs(eleEta[iele]) < getPreCutValue2("eleEta_end") ) 
 	 // 	     )  in_Endcap=true;
 
-	 //ID + ISO + NO overlap with good muons	 	 
-	 if ( elePassID[iele]>=15 && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
-	 //if ( elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
+	 //ID + ISO + NO overlap with good muons	 	
+	 int eleID = elePassID[iele];
+	 if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
 	   {
 	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
 	   }
@@ -152,7 +154,6 @@ void analysisClass::Loop()
 	 //NOTE: We should verify that caloJetOverlaps match with the code above
 
        }     
-
 
      // Set the evaluation of the cuts to false and clear the variable values and filled status
      resetCuts();
@@ -236,6 +237,21 @@ void analysisClass::Loop()
 	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]]
 	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]];
 	 fillVariableWithValue("sT", calc_sT);
+       }
+
+     //cout << "Mee" << endl;
+
+     if (TwoEle)
+       {
+ 	 TLorentzVector ele1, ele2, ee;
+	 ele1.SetPtEtaPhiM(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],
+			   eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],
+			   elePhi[v_idx_ele_PtCut_ID_ISO_noOverlap[0]],0);
+	 ele2.SetPtEtaPhiM(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[1]],
+			   eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[1]],
+			   elePhi[v_idx_ele_PtCut_ID_ISO_noOverlap[1]],0);
+	 ee = ele1+ele2;
+	 fillVariableWithValue("Mee", ee.M());
        }
 
      //cout << "Mej" << endl;

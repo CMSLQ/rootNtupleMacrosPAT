@@ -13,8 +13,9 @@
 #
 #VariableName	      value1	   value2		value3		value4		level
 #------------	      ------------ -------------	------------	-------------	-----
-ele_PtCut	      30	   -			-		-		-1
-jet_PtCut	      50	   -			-		-		-1
+ele_PtCut	      20	   -			-		-		-1
+eleType		      1		   -			-		-		-1
+jet_PtCut	      20	   -			-		-		-1
 muon_PtCut	      10	   -			-		-		-1
 jet_ele_DeltaRcut     0.5	   -			-		-		-1
 muon_jet_DeltaRcut    0.1	   -			-		-		-1
@@ -62,5 +63,6 @@ Eta1stJet_noOvrlpEle		-inf	   +inf			-		-		3	100 -5 5
 Eta2ndJet_noOvrlpEle		-inf	   +inf			-		-		3	100 -5 5
 mEta1stJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5   
 mEta2ndJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5
+Mee				100	   +inf			-		-		5	100 0 1000
 sT				680	   +inf			-		-		5	200 0 2000
 Mej				-inf	   +inf			-		-		6	200 0 2000
