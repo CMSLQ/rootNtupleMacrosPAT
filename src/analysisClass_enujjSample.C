@@ -86,6 +86,8 @@ void analysisClass::Loop()
      vector<int> v_idx_ele_PtCut;
      vector<int> v_idx_ele_PtCut_ID_ISO_noOverlap;
 
+     int eleIDType = int( getPreCutValue1("eleIDType") );
+
      for(int iele=0;iele<eleCount;iele++)
        {
 
@@ -107,8 +109,12 @@ void analysisClass::Loop()
 	 // 	     ( fabs(eleEta[iele]) < getPreCutValue2("eleEta_end") ) 
 	 // 	     )  in_Endcap=true;
 
+	 int eleID = elePassID[iele];
+
 	 //ID + ISO + NO overlap with good muons	 	 
-	 if ( elePassID[iele]==1 && elePassIso[iele]==1 && eleHasOverlaps[iele]==0 ) 
+	 if ( (eleID & 1 << eleIDType ) > 0 
+	      && elePassIso[iele]==1 
+	      && eleOverlaps[iele]==0 ) 
 	   {
 	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
 	   }
@@ -145,8 +151,11 @@ void analysisClass::Loop()
 	 // 	 if ( minDeltaR > deltaR_minCut )  v_idx_jet_final.push_back(ijet);
 
 	 //pT pre-cut + no overlaps with electrons
-	 if( caloJetHasOverlaps[ijet]!=1 && caloJetHasOverlaps[ijet]!=3 )
-	   v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
+	 if( (caloJetOverlaps[ijet] & 1 << eleIDType ) == 0 ) /* NO overlap with electrons */  
+	   //&& (caloJetOverlaps[ijet] & 1 << 5) == 0 ) /* NO overlap with muons */   
+	   {
+	     v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
+	   }
 
 	 //NOTE: We should verify that caloJetHasOverlaps match with the code above
 
