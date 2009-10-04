@@ -1,0 +1,72 @@
+#
+#############################     Example of file with list of cuts
+#
+#
+#------------------------ Preliminary cut variables and values (cut level -1) here -----------------------------
+# This first list of variable names and values are used to pass configurable values to the user code associated 
+# to a variable name.
+# The user can retrieve the values associated to a variable name via a provided function call
+# [e.g. getPreCutValue1("eleFidRegion") and similarly for value2, value3 and value4 ]
+# The idea is that the user can use these values to define the list of objects (electrons, jets, etc.) used in 
+# analysis. No cut is automatically evaluated on these variables and the cut level must be equal to -1. 
+# Variable names must be unique.
+#
+#VariableName	      value1	   value2		value3		value4		level
+#------------	      ------------ -------------	------------	-------------	-----
+ele_PtCut	      30	   -			-		-		-1
+jet_PtCut	      50	   -			-		-		-1
+muon_PtCut	      10	   -			-		-		-1
+jet_ele_DeltaRcut     0.5	   -			-		-		-1
+muon_jet_DeltaRcut    0.1	   -			-		-		-1
+TriggerBits1	      51	   52			67		68		-1
+## EM80=51, EM200=52, HLTPhoton15=67, HLTPhoton25=68 (HLT1EMHightEtb=40, HLT1EMVeryHightEt=41 old??) ##
+eleEta_bar	      1.442	   -			-		-		-1
+eleEta_end	      1.560	   2.5			-		-		-1
+muonEta_bar	      1.2	   -			-		-		-1
+muonEta_end	      1.2	   2.4			-		-		-1
+#
+#
+#--------------------------------- Cuts (level 0,1,2,3 ... n) below --------------------------------------------
+# The cut variable names, cut boundaries and histogram binnings are provided here by the user.
+# In the event loop of the analysisClass_template.C, the user have to fill each variable with its value using
+# a provided function call [ e.g. fillVariableWithValue("nEleFinal", number_of_electrons) ]
+# The variable names in the user code has to match the names provided here.
+# Variable names must be unique.
+# The cut will be declared "passed" if
+#    ( minValue1 < VariableName <= maxValue1 ) 
+# in case only the first range (minValue1, maxValue1) is provided, 
+# otherwise the cut will be declared "passed" if
+#    ( minValue1 < VariableName <= maxValue1 )  OR  ( minValue2 < VariableName <= maxValue2 )
+# in case even the second range (minValue2, maxValue2) is provided.
+# The level of the cut (0,1,2 ... n) is provided by the user and can be used in the code to easily determine if
+# groups of same-level cuts have passed or failed.
+#
+#VariableName			minValue1(<) maxValue1(>=)	minValue2(<)	maxValue2(>=)	level	histoNbinsMinMax
+#------------			------------ -------------	------------	-------------	-----	----------------
+#HLT				-inf	   +inf			-		-		0	2 -0.5 1.5
+nEle_all			-inf	   +inf			-		-		0	16 -0.5 15.5
+nEle_PtCut			-inf	   +inf			-		-		1	16 -0.5 15.5
+nEle_PtCut_IDISO_noOvrlp	0	   1			-		-		2	16 -0.5 15.5
+Pt1stEle_IDISO_NoOvrlp		30	   +inf			-		-		3	100 0 1000
+Eta1stEle_IDISO_NoOvrlp		-inf	   +inf			-		-		3	100 -5 5
+mEta1stEle_IDISO_NoOvrlp	-inf	   2			-		-		3	50 0 5
+caloMET				50	   +inf			-		-		3	200 0 2000
+nJet_all			-inf	   +inf			-		-		0	16 -0.5 15.5
+nJet_PtCut			-inf	   +inf			-		-		1	16 -0.5 15.5
+nJet_PtCut_noOvrlpEle		1	   +inf			-		-		2	16 -0.5 15.5
+Pt1stJet_noOvrlpEle		50	   +inf			-		-		3	100 0 1000
+Pt2ndJet_noOvrlpEle		50	   +inf			-		-		3	100 0 1000
+Eta1stJet_noOvrlpEle		-inf	   +inf			-		-		3	100 -5 5   
+Eta2ndJet_noOvrlpEle		-inf	   +inf			-		-		3	100 -5 5
+mEta1stJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5   
+mEta2ndJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5
+nMuon_all			-inf	   +inf			-		-		4	16 -0.5 15.5
+nMuon_PtCut			-inf	   +inf			-		-		4	16 -0.5 15.5
+nMuon_PtCut_IDISO		-1	   0			-		-		4	16 -0.5 15.5
+MT				200	   +inf			-		-		5	200 0 2000
+sT				680	   +inf			-		-		5	200 0 2000
+Mej				-inf	   +inf			-		-		6	200 0 2000
+MTnuj				-inf	   +inf			-		-		6	200 0 2000
+mDeltaPhiMET1stJet		-inf	   +inf			-		-		7	50 0 4	
+mDeltaPhiMET2ndJet		-inf	   +inf			-		-		7	50 0 4	
+mDeltaPhiMETEle			-inf	   +inf			-		-		7	50 0 4
