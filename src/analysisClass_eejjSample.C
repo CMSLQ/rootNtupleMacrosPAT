@@ -86,7 +86,7 @@ void analysisClass::Loop()
      vector<int> v_idx_ele_PtCut;
      vector<int> v_idx_ele_PtCut_ID_ISO_noOverlap;
 
-     int eleIDType = getPreCutValue1("eleType");
+     int eleIDType = getPreCutValue1("eleIDType");
 
     for(int iele=0;iele<eleCount;iele++)
        {
@@ -148,12 +148,44 @@ void analysisClass::Loop()
 	 // 	 if ( minDeltaR > deltaR_minCut )  v_idx_jet_final.push_back(ijet);
 
 	 //pT pre-cut + no overlaps with electrons
-	 if( caloJetOverlaps[ijet]!=1 && caloJetOverlaps[ijet]!=3 )
+	 if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0)/* NO overlap with electrons */  
+	   // && (caloJetOverlaps[ijet] & 1 << 5)==0 )/* NO overlap with muons */   
 	   v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
 
 	 //NOTE: We should verify that caloJetOverlaps match with the code above
 
        }     
+
+    //## Muons
+     vector<int> v_idx_muon_all;
+     vector<int> v_idx_muon_PtCut;
+     vector<int> v_idx_muon_PtCut_ID_ISO;
+
+     for(int imuon=0;imuon<muonCount;imuon++)
+       {
+	 //no cut on reco muons
+	 v_idx_muon_all.push_back(imuon);
+
+	 //pT pre-cut on ele
+	 if ( muonPt[imuon] < getPreCutValue1("muon_PtCut") ) continue;
+	 
+	 v_idx_muon_PtCut.push_back(imuon);
+
+	 //ID + ISO
+	 if ( muonPassIso[imuon]==1 && muonPassID[imuon]==1)
+	   v_idx_muon_PtCut_ID_ISO.push_back(imuon);
+
+	 // 	 //barrel-endcap definition
+	 // 	 bool in_Barrel=false;
+	 //          bool in_Endcap=false;
+	 // 	 if( fabs(muonEta[imuon]) < getPreCutValue1("muonEta_bar") )  in_Barrel=true;
+	 // 	 if( ( fabs(muonEta[imuon]) > getPreCutValue1("muonEta_end") )
+	 // 	     && 
+	 // 	     ( fabs(muonEta[imuon]) < getPreCutValue2("muonEta_end") ) 
+	 // 	     )  in_Endcap=true;
+	 
+       }// end loop over muons
+
 
      // Set the evaluation of the cuts to false and clear the variable values and filled status
      resetCuts();
@@ -200,6 +232,7 @@ void analysisClass::Loop()
 	 fillVariableWithValue( "Eta2ndEle_IDISO_NoOvrlp", eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[1]] );
 	 fillVariableWithValue( "mEta2ndEle_IDISO_NoOvrlp", fabs(eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[1]]) );
        }
+
     //cout << "1st Jet" << endl;
      //## 1st jet
      if( v_idx_jet_PtCut_noOverlapEle.size() >= 1 ) 
@@ -258,6 +291,8 @@ void analysisClass::Loop()
      
      //## Mej 
      double M11, M12, M21, M22 = -999;
+     double diff_11_22 = 9999;
+     double diff_12_21 = 9999;
      if ( (TwoEle) && (TwoJets) ) 
        {
  	 TLorentzVector jet1, jet2, ele1, ele2;
@@ -283,8 +318,8 @@ void analysisClass::Loop()
 	 M12 = jet1ele2.M();
 	 M22 = jet2ele2.M();
 
-	 double diff_11_22 = M11 - M22;
-	 double diff_12_21 = M12 - M21;
+	 diff_11_22 = M11 - M22;
+	 diff_12_21 = M12 - M21;
 
 	 if(diff_11_22 > diff_12_21)
 	   {
@@ -310,19 +345,16 @@ void analysisClass::Loop()
 
      if( passedCut("all") ) 
        {
-	 h_Mej->Fill(M11);
-	 h_Mej->Fill(M12);
-	 h_Mej->Fill(M21);
-	 h_Mej->Fill(M22);
-// 	 h2_Mej_MTnuj_good->Fill(good_Mej,good_MTnuj);
-// 	 h2_Mej_MTnuj_bad->Fill(bad_Mej,bad_MTnuj);
-
-	 // 	 //print out
-	 // 	 cout << "jentry" << jentry << endl;
-	 // 	 Show(jentry);	 
-	 // 	 cout << "calc_sT: " << calc_sT << endl;
-	 // 	 cout << "MT: " << MT << endl;
-
+	 if(diff_11_22 > diff_12_21)
+	   {
+	     h_Mej->Fill(M12);
+	     h_Mej->Fill(M21);
+	   }
+	 else
+	   {
+	     h_Mej->Fill(M11);
+	     h_Mej->Fill(M22);
+	   }	 
        }
 
      // reject events that did not pass level 0 cuts
