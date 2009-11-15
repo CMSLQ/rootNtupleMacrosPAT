@@ -66,8 +66,8 @@ nMuon_all			-inf	   +inf			-		-		4	16 -0.5 15.5
 nMuon_PtCut			-inf	   +inf			-		-		4	16 -0.5 15.5
 nMuon_PtCut_IDISO		-1	   0			-		-		4	16 -0.5 15.5
 #mDeltaPhiMET1stJet		-inf	   +inf			-		-		7	50 0 4	
-MT				180	   +inf			-		-		5	200 0 2000
-sT				660	   +inf			-		-		5	200 0 2000
+MT				180	   +inf			-		-		5	300 0 3000
+sT				660	   +inf			-		-		5	300 0 3000
 #Mej				-inf	   +inf			-		-		6	200 0 2000
 #MTnuj				-inf	   +inf			-		-		6	200 0 2000
 #mDeltaPhiMET2ndJet		-inf	   +inf			-		-		7	50 0 4	
