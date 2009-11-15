@@ -72,10 +72,6 @@ sT				660	   +inf			-		-		5	200 0 2000
 #MTnuj				-inf	   +inf			-		-		6	200 0 2000
 #mDeltaPhiMET2ndJet		-inf	   +inf			-		-		7	50 0 4	
 mDeltaPhiMETEle			-inf	   +inf			-		-		7	50 0 4
-MT_Plus				-inf	   +inf			-		-		7	200 0 2000
-MT_Minus			-inf	   +inf			-		-		7	200 0 2000
-sT_Plus				-inf	   +inf			-		-		7	200 0 2000
-sT_Minus			-inf	   +inf			-		-		7	200 0 2000
 #
 #
 #------------------------ Cut Optimizer -----------------------------

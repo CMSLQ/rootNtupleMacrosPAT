@@ -277,15 +277,6 @@ void analysisClass::Loop()
 	 // transverse mass
 	 MT = sqrt(2 * elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] * caloMET * (1 - cos(deltaphi)) );
 	 fillVariableWithValue("MT", MT);
-
-	 // transverse mass (e+)
-	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0)
-	   fillVariableWithValue("MT_Plus", MT);
-
-	 // transverse mass (e-)
-	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0)
-	   fillVariableWithValue("MT_Minus", MT);
-
        }
 
      //cout << "1st Jet" << endl;
@@ -342,15 +333,6 @@ void analysisClass::Loop()
 	   elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]
 	   + caloMET;
 	 fillVariableWithValue("sT", calc_sT);
-
-	 // ST (e+)
-	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0)
-	   fillVariableWithValue("sT_Plus", calc_sT);
-	 
-	 // ST (e-)
-	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0)
-	   fillVariableWithValue("sT_Minus", calc_sT);
-
        }
 
      //cout << "Mej" << endl;
@@ -487,50 +469,51 @@ void analysisClass::Loop()
 
      //### For W background estimation ###
 
+
      //baseline cuts , muon veto , no MT , no ST cut
      if( passedAllPreviousCuts("MT") )
        {
-	 if( variableIsFilled("MT_Plus") )
-	   h_MT_Plus_noMTSTcut->Fill( getVariableValue("MT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("MT") ) 
+	   h_MT_Plus_noMTSTcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("MT_Minus") )
-	   h_MT_Minus_noMTSTcut->Fill( getVariableValue("MT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("MT") ) 
+	   h_MT_Minus_noMTSTcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("sT_Plus") )
-	   h_sT_Plus_noMTSTcut->Fill( getVariableValue("sT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("sT") ) 
+	   h_sT_Plus_noMTSTcut->Fill( getVariableValue("sT") );
 
-	 if( variableIsFilled("sT_Minus") )
-	   h_sT_Minus_noMTSTcut->Fill( getVariableValue("sT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("sT") ) 
+	   h_sT_Minus_noMTSTcut->Fill( getVariableValue("sT") );
        }
      //baseline cuts , muon veto , MT , no ST cut
      if( passedAllPreviousCuts("sT") )
        {
-	 if( variableIsFilled("MT_Plus") )
-	   h_MT_Plus_noSTcut->Fill( getVariableValue("MT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("MT") ) 
+	   h_MT_Plus_noSTcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("MT_Minus") )
-	   h_MT_Minus_noSTcut->Fill( getVariableValue("MT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("MT") ) 
+	   h_MT_Minus_noSTcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("sT_Plus") )
-	   h_sT_Plus_noSTcut->Fill( getVariableValue("sT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("sT") ) 
+	   h_sT_Plus_noSTcut->Fill( getVariableValue("sT") );
 
-	 if( variableIsFilled("sT_Minus") )
-	   h_sT_Minus_noSTcut->Fill( getVariableValue("sT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("sT") ) 
+	   h_sT_Minus_noSTcut->Fill( getVariableValue("sT") );
        }
      //all cuts
      if( passedCut("all") ) 
        {
-	 if( variableIsFilled("MT_Plus") )
-	   h_MT_Plus_allcut->Fill( getVariableValue("MT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("MT") ) 
+	   h_MT_Plus_allcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("MT_Minus") )
-	   h_MT_Minus_allcut->Fill( getVariableValue("MT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("MT") ) 
+	   h_MT_Minus_allcut->Fill( getVariableValue("MT") );
 
-	 if( variableIsFilled("sT_Plus") )
-	   h_sT_Plus_allcut->Fill( getVariableValue("sT_Plus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0 && variableIsFilled("sT") ) 
+	   h_sT_Plus_allcut->Fill( getVariableValue("sT") );
 
-	 if( variableIsFilled("sT_Minus") )
-	   h_sT_Minus_allcut->Fill( getVariableValue("sT_Minus") );
+	 if( eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0 && variableIsFilled("sT") ) 
+	   h_sT_Minus_allcut->Fill( getVariableValue("sT") );
        }
 
      // reject events that did not pass level 0 cuts
