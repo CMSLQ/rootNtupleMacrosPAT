@@ -31,6 +31,33 @@ void analysisClass::Loop()
    
    //////////book histos here
 
+   TH1F *h_MT_Plus_noMTSTcut = new TH1F ("h_MT_Plus_noMTSTcut","h_MT_Plus_noMTSTcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Plus_noMTSTcut->Sumw2();
+   TH1F *h_MT_Minus_noMTSTcut = new TH1F ("h_MT_Minus_noMTSTcut","h_MT_Minus_noMTSTcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Minus_noMTSTcut->Sumw2();
+   TH1F *h_sT_Plus_noMTSTcut = new TH1F ("h_sT_Plus_noMTSTcut","h_sT_Plus_noMTSTcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Plus_noMTSTcut->Sumw2();
+   TH1F *h_sT_Minus_noMTSTcut = new TH1F ("h_sT_Minus_noMTSTcut","h_sT_Minus_noMTSTcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Minus_noMTSTcut->Sumw2();
+
+   TH1F *h_MT_Plus_noSTcut = new TH1F ("h_MT_Plus_noSTcut","h_MT_Plus_noSTcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Plus_noSTcut->Sumw2();
+   TH1F *h_MT_Minus_noSTcut = new TH1F ("h_MT_Minus_noSTcut","h_MT_Minus_noSTcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Minus_noSTcut->Sumw2();
+   TH1F *h_sT_Plus_noSTcut = new TH1F ("h_sT_Plus_noSTcut","h_sT_Plus_noSTcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Plus_noSTcut->Sumw2();
+   TH1F *h_sT_Minus_noSTcut = new TH1F ("h_sT_Minus_noSTcut","h_sT_Minus_noSTcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Minus_noSTcut->Sumw2();
+
+   TH1F *h_MT_Plus_allcut = new TH1F ("h_MT_Plus_allcut","h_MT_Plus_allcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Plus_allcut->Sumw2();
+   TH1F *h_MT_Minus_allcut = new TH1F ("h_MT_Minus_allcut","h_MT_Minus_allcut",
+					 getHistoNBins("MT"),getHistoMin("MT"),getHistoMax("MT"));  h_MT_Minus_allcut->Sumw2();
+   TH1F *h_sT_Plus_allcut = new TH1F ("h_sT_Plus_allcut","h_sT_Plus_allcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Plus_allcut->Sumw2();
+   TH1F *h_sT_Minus_allcut = new TH1F ("h_sT_Minus_allcut","h_sT_Minus_allcut",
+					 getHistoNBins("sT"),getHistoMin("sT"),getHistoMax("sT"));  h_sT_Minus_allcut->Sumw2();
+
    //Combinations
    //TH1F *h_Mej = new TH1F ("Mej","Mej",200,0,2000);  h_Mej->Sumw2();
    TH2F *h2_Mej_MTnuj_good = new TH2F ("h2_Mej_MTnuj_good","h2_Mej_MTnuj_good",100,0,2000,100,0,2000);  
@@ -251,6 +278,14 @@ void analysisClass::Loop()
 	 MT = sqrt(2 * elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[0]] * caloMET * (1 - cos(deltaphi)) );
 	 fillVariableWithValue("MT", MT);
 
+	 // transverse mass (e+)
+	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0)
+	   fillVariableWithValue("MT_Plus", MT);
+
+	 // transverse mass (e-)
+	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0)
+	   fillVariableWithValue("MT_Minus", MT);
+
        }
 
      //cout << "1st Jet" << endl;
@@ -309,6 +344,15 @@ void analysisClass::Loop()
 	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]]
 	   + caloMET;
 	 fillVariableWithValue("sT", calc_sT);
+
+	 // ST (e+)
+	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]>0)
+	   fillVariableWithValue("sT_Plus", calc_sT);
+	 
+	 // ST (e-)
+	 if(eleCharge[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]<0)
+	   fillVariableWithValue("sT_Minus", calc_sT);
+
        }
 
      //cout << "Mej" << endl;
@@ -426,6 +470,9 @@ void analysisClass::Loop()
      // Fill histograms and do analysis based on cut evaluation
 
 
+     //### To test LQ mass reconstruction algorithm ###
+
+     //scatter plot Mej vs MTnuj
      if( passedCut("all") ) 
        {
 	 h2_Mej_MTnuj_good->Fill(good_Mej,good_MTnuj);
@@ -437,6 +484,55 @@ void analysisClass::Loop()
 	 // 	 cout << "calc_sT: " << calc_sT << endl;
 	 // 	 cout << "MT: " << MT << endl;
 
+       }
+
+
+     //### For W background estimation ###
+
+     //baseline cuts , muon veto , no MT , no ST cut
+     if( passedAllPreviousCuts("MT") )
+       {
+	 if( variableIsFilled("MT_Plus") )
+	   h_MT_Plus_noMTSTcut->Fill( getVariableValue("MT_Plus") );
+
+	 if( variableIsFilled("MT_Minus") )
+	   h_MT_Minus_noMTSTcut->Fill( getVariableValue("MT_Minus") );
+
+	 if( variableIsFilled("sT_Plus") )
+	   h_sT_Plus_noMTSTcut->Fill( getVariableValue("sT_Plus") );
+
+	 if( variableIsFilled("sT_Minus") )
+	   h_sT_Minus_noMTSTcut->Fill( getVariableValue("sT_Minus") );
+       }
+     //baseline cuts , muon veto , MT , no ST cut
+     if( passedAllPreviousCuts("sT") )
+       {
+	 if( variableIsFilled("MT_Plus") )
+	   h_MT_Plus_noSTcut->Fill( getVariableValue("MT_Plus") );
+
+	 if( variableIsFilled("MT_Minus") )
+	   h_MT_Minus_noSTcut->Fill( getVariableValue("MT_Minus") );
+
+	 if( variableIsFilled("sT_Plus") )
+	   h_sT_Plus_noSTcut->Fill( getVariableValue("sT_Plus") );
+
+	 if( variableIsFilled("sT_Minus") )
+	   h_sT_Minus_noSTcut->Fill( getVariableValue("sT_Minus") );
+       }
+     //all cuts
+     if( passedCut("all") ) 
+       {
+	 if( variableIsFilled("MT_Plus") )
+	   h_MT_Plus_allcut->Fill( getVariableValue("MT_Plus") );
+
+	 if( variableIsFilled("MT_Minus") )
+	   h_MT_Minus_allcut->Fill( getVariableValue("MT_Minus") );
+
+	 if( variableIsFilled("sT_Plus") )
+	   h_sT_Plus_allcut->Fill( getVariableValue("sT_Plus") );
+
+	 if( variableIsFilled("sT_Minus") )
+	   h_sT_Minus_allcut->Fill( getVariableValue("sT_Minus") );
        }
 
      // reject events that did not pass level 0 cuts
@@ -452,7 +548,6 @@ void analysisClass::Loop()
      // ......
 
 
-
      ////////////////////// User's code ends here ///////////////////////
 
    } // End loop over events
@@ -461,6 +556,19 @@ void analysisClass::Loop()
    //h_Mej->Write();
    h2_Mej_MTnuj_good->Write();
    h2_Mej_MTnuj_bad->Write();	 
+
+   h_MT_Plus_noMTSTcut->Write();
+   h_MT_Minus_noMTSTcut->Write();
+   h_sT_Plus_noMTSTcut->Write();
+   h_sT_Minus_noMTSTcut->Write();
+   h_MT_Plus_noSTcut->Write();
+   h_MT_Minus_noSTcut->Write();
+   h_sT_Plus_noSTcut->Write();
+   h_sT_Minus_noSTcut->Write();
+   h_MT_Plus_allcut->Write();
+   h_MT_Minus_allcut->Write();
+   h_sT_Plus_allcut->Write();
+   h_sT_Minus_allcut->Write();
 
    std::cout << "analysisClass::Loop() ends" <<std::endl;   
 }
