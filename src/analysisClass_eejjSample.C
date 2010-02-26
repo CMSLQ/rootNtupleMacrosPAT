@@ -111,7 +111,8 @@ void analysisClass::Loop()
 
 	 //ID + ISO + NO overlap with good muons	 	
 	 int eleID = elePassID[iele];
-	 if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
+	 //if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
+	 if ( (eleID & 1<< eleIDType) > 0  && eleOverlaps[iele]==0 ) 
 	   {
 	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
 	   }
