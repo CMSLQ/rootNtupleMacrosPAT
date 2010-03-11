@@ -86,7 +86,7 @@ void analysisClass::Loop()
      vector<int> v_idx_ele_PtCut;
      vector<int> v_idx_ele_PtCut_ID_ISO_noOverlap;
 
-     int eleIDType = getPreCutValue1("eleIDType");
+     int eleIDType = (int) getPreCutValue1("eleIDType");
 
     for(int iele=0;iele<eleCount;iele++)
        {
@@ -112,7 +112,7 @@ void analysisClass::Loop()
 	 //ID + ISO + NO overlap with good muons	 	
 	 int eleID = elePassID[iele];
 	 //if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
-	 if ( (eleID & 1<< eleIDType) > 0  && eleOverlaps[iele]==0 ) 
+	 if ( (eleID & 1<< eleIDType) > 0  && eleOverlaps[iele]==0 )
 	   {
 	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
 	   }
@@ -227,11 +227,14 @@ void analysisClass::Loop()
 	 fillVariableWithValue( "mEta1stEle_IDISO_NoOvrlp", fabs(eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[0]]) );
        }
 
+     //## 2nd ele
       if( v_idx_ele_PtCut_ID_ISO_noOverlap.size() >= 2 ) 
        {
 	 fillVariableWithValue( "Pt2ndEle_IDISO_NoOvrlp", elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[1]] );
 	 fillVariableWithValue( "Eta2ndEle_IDISO_NoOvrlp", eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[1]] );
 	 fillVariableWithValue( "mEta2ndEle_IDISO_NoOvrlp", fabs(eleEta[v_idx_ele_PtCut_ID_ISO_noOverlap[1]]) );
+
+	 fillVariableWithValue( "maxMEtaEles_IDISO_NoOvrl", max( getVariableValue("mEta1stEle_IDISO_NoOvrlp"), getVariableValue("mEta2ndEle_IDISO_NoOvrlp") ) );
        }
 
     //cout << "1st Jet" << endl;
@@ -251,6 +254,8 @@ void analysisClass::Loop()
 	 fillVariableWithValue( "Pt2ndJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]] );
 	 fillVariableWithValue( "Eta2ndJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]] );
 	 fillVariableWithValue( "mEta2ndJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]]) );
+
+	 fillVariableWithValue( "maxMEtaJets_noOvrlpEle", max( getVariableValue("mEta1stJet_noOvrlpEle"), getVariableValue("mEta2ndJet_noOvrlpEle") ) );
        }
 
      //## define "2ele" and "2jets" booleans
