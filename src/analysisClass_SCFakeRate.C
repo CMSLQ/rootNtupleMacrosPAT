@@ -42,12 +42,13 @@ void analysisClass::Loop()
    TH1F *h_goodEleSCEta = new TH1F ("goodEleSCEta","goodEleSCEta",100,-3.,3.); h_goodEleSCEta->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2SC = new TH1F ("goodEleSCPt_Barrel_2SC","goodEleSCPt_Barrel_2SC",200,0,1000); h_goodEleSCPt_Barrel_2SC->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2Jets = new TH1F ("goodEleSCPt_Barrel_2Jets","goodEleSCPt_Barrel_2Jets",200,0,1000); h_goodEleSCPt_Barrel_2Jets->Sumw2();
+   TH1F *h_goodEleSCPt_Barrel_2Jets_wSC = new TH1F ("goodEleSCPt_Barrel_2Jets_wSC","goodEleSCPt_Barrel_2Jets_wSC",200,0,1000); h_goodEleSCPt_Barrel_2Jets_wSC->Sumw2();
    TH1F *h_goodEleSCPt_2SC2Jets = new TH1F ("goodEleSCPt_2SC2Jets","goodEleSCPt_2SC2Jets",200,0,1000); h_goodEleSCPt_2SC2Jets->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2SC2Jets = new TH1F ("goodEleSCPt_Barrel_2SC2Jets","goodEleSCPt_Barrel_2SC2Jets",200,0,1000); h_goodEleSCPt_Barrel_2SC2Jets->Sumw2();
    TH1F *h_goodEleSCEta_2SC2Jets = new TH1F ("goodEleSCEta_2SC2Jets","goodEleSCEta_2SC2Jets",100,-3.,3.); h_goodEleSCEta_2SC2Jets->Sumw2();
    TH1F *h_goodEle_ST = new TH1F ("goodEle_ST","goodEle_ST",220,-100,1000); h_goodEle_ST->Sumw2();
    TH1F *h_goodEle_SCEcalIso = new TH1F ("goodEle_SCEcalIso","goodEle_SCEcalIso",200,0,100); h_goodEle_SCEcalIso->Sumw2();
-   TH2F *h_goodEle_SCEcalIso_PASS = new TH2F ("goodEle_SCEcalIso_PASS","goodEle_SCEcalIso_PASS",100,0,1000,1000,0,100); h_goodEle_SCEcalIso_PASS->Sumw2();
+   TH1F *h_goodEle_SCEcalIso_PASS = new TH1F ("goodEle_SCEcalIso_PASS","goodEle_SCEcalIso_PASS",100,0,10); h_goodEle_SCEcalIso_PASS->Sumw2();
    TH1F *h_goodElePt = new TH1F ("goodElePt","goodElePt",200,0,1000); h_goodElePt->Sumw2();
    TH1F *h_looseEleSCPt = new TH1F ("looseEleSCPt","looseEleSCPt",200,0,1000); h_looseEleSCPt->Sumw2();
    TH1F *h_looseElePt = new TH1F ("looseElePt","looseElePt",200,0,1000); h_looseElePt->Sumw2();
@@ -58,6 +59,7 @@ void analysisClass::Loop()
    TH1F *h_goodSCEta = new TH1F ("goodSCEta","goodSCEta",100,-3.,3.); h_goodSCEta->Sumw2();
    TH1F *h_goodSCPt_Barrel_2SC = new TH1F ("goodSCPt_Barrel_2SC","goodSCPt_Barrel_2SC",200,0,1000); h_goodSCPt_Barrel_2SC->Sumw2();
    TH1F *h_goodSCPt_Barrel_2Jets = new TH1F ("goodSCPt_Barrel_2Jets","goodSCPt_Barrel_2Jets",200,0,1000); h_goodSCPt_Barrel_2Jets->Sumw2();
+   TH1F *h_goodSCPt_Barrel_2Jets_wSC = new TH1F ("goodSCPt_Barrel_2Jets_wSC","goodSCPt_Barrel_2Jets_wSC",200,0,1000); h_goodSCPt_Barrel_2Jets_wSC->Sumw2();
    TH1F *h_goodSCPt_2SC2Jets = new TH1F ("goodSCPt_2SC2Jets","goodSCPt_2SC2Jets",200,0,1000); h_goodSCPt_2SC2Jets->Sumw2();
    TH1F *h_goodSCPt_Barrel_2SC2Jets = new TH1F ("goodSCPt_Barrel_2SC2Jets","goodSCPt_Barrel_2SC2Jets",200,0,1000); h_goodSCPt_Barrel_2SC2Jets->Sumw2();
    TH1F *h_goodSCEta_2SC2Jets = new TH1F ("goodSCEta_2SC2Jets","goodSCEta_2SC2Jets",100,-3.,3.); h_goodSCEta_2SC2Jets->Sumw2();
@@ -76,6 +78,11 @@ void analysisClass::Loop()
    TH1F *h_dR_SS_NoMeeCut = new TH1F ("dR_SS_NoMeeCut","dR_SS_NoMeeCut",100,0,5.0); h_dR_SS_NoMeeCut->Sumw2();
    TH1F *h_dPhi_SJ_NoMeeCut = new TH1F ("dPhi_SJ_NoMeeCut","dPhi_SJ_NoMeeCut",100,0,6.3); h_dPhi_SJ_NoMeeCut->Sumw2();
    TH1F *h_dR_SJ_NoMeeCut = new TH1F ("dR_SJ_NoMeeCut","dR_SJ_NoMeeCut",100,0,5.0); h_dR_SJ_NoMeeCut->Sumw2();
+
+   TH2F *h_scEcalIso_Et = new TH2F ("scEcalIso_Et","scEcalIso_Et",100,0,100,100,0,1000); h_scEcalIso_Et->Sumw2();
+   TH1F *h_scHoE = new TH1F ("scHoE","scHoE",100,0,1.0); h_scHoE->Sumw2();
+   TH1F *h_scTrkIso = new TH1F ("scTrkIso","scTrkIso",100,0,50); h_scTrkIso->Sumw2();
+   TH1F *h_scIetaIeta = new TH1F ("scIetaIeta","scIetaIeta",100,0,0.1); h_scIetaIeta->Sumw2();
 
    /////////initialize variables
 
@@ -144,6 +151,7 @@ void analysisClass::Loop()
      int idx_scNextPt = -1;
     for(int isc=0;isc<scCount;isc++){
       if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
+      if (fabs(scEta[isc])>1.45) continue; 
       if (scHoE[isc]>0.05) continue;
       if (scSigmaIEIE[isc]>0.0275) continue;
       double scEt = scPt[isc];
@@ -168,6 +176,7 @@ void analysisClass::Loop()
     for(int isc=0;isc<scCount;isc++){
       if (isc==idx_scHighestPt || isc==idx_scNextPt) continue;
       if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
+      if (fabs(scEta[isc])>1.45) continue; 
       bool scPassHoE= false;
       bool scPassSigmaEE= false;
       bool scPassEcalIso= false;
@@ -190,6 +199,7 @@ void analysisClass::Loop()
      vector<int> v_idx_jet_all;
      vector<int> v_idx_jet_PtCut;
      vector<int> v_idx_jet_PtCut_noOverlapEle;
+     vector<int> v_idx_jet_PtCut_noOverlapSC;
      for(int ijet=0;ijet<caloJetCount;ijet++)
        {
 	 //no cut on reco jets
@@ -220,7 +230,10 @@ void analysisClass::Loop()
 	     }
 
 	 //pT pre-cut + no overlaps with electrons
-       	 //if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 && minDRsc>0.5 && (caloJetOverlaps[ijet] & 1 << 5)==0 )/* NO overlap with superclusters and electrons or muons*/  
+       	 if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 && minDRsc>0.5  )/* NO overlap with superclusters and electrons or muons*/  
+	   {
+	     v_idx_jet_PtCut_noOverlapSC.push_back(ijet);
+	   }
        	 if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 )/* NO overlap with superclusters and electrons */  
 	   {
 	     v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
@@ -232,12 +245,12 @@ void analysisClass::Loop()
 
      //find dR between isoSC and jets
 
-	 for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapEle.size(); ijet++){
+	 for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapSC.size(); ijet++){
 	   if (ijet>1) break;  // only care about two leading jets
 	   TVector3 jet_vec;
-	   jet_vec.SetPtEtaPhi(caloJetPt[v_idx_jet_PtCut_noOverlapEle[ijet]],
-				    caloJetEta[v_idx_jet_PtCut_noOverlapEle[ijet]],
-				    caloJetPhi[v_idx_jet_PtCut_noOverlapEle[ijet]]);
+	   jet_vec.SetPtEtaPhi(caloJetPt[v_idx_jet_PtCut_noOverlapSC[ijet]],
+				    caloJetEta[v_idx_jet_PtCut_noOverlapSC[ijet]],
+				    caloJetPhi[v_idx_jet_PtCut_noOverlapSC[ijet]]);
 	   float minDR = 99;
 	   int idx_nearest_sc = -1;
 	   for(int isc=0;isc<v_idx_sc_iso.size();isc++)
@@ -254,7 +267,7 @@ void analysisClass::Loop()
 	       }
 	     }
 	   if (minDR!=99) h_dR_JetSC->Fill(minDR);
-	   if ((minDR!=99)&&(v_idx_jet_PtCut_noOverlapEle.size()>1)) h_dR_JetSC_2Jets->Fill(minDR);
+	   if ((minDR!=99)&&(v_idx_jet_PtCut_noOverlapSC.size()>1)) h_dR_JetSC_2Jets->Fill(minDR);
 	   if (idx_nearest_sc !=-1) h_dR_JetSC_EcalIso->Fill(minDR,scHEEPEcalIso[v_idx_sc_iso[idx_nearest_sc]]);
 	 }
 
@@ -273,7 +286,7 @@ void analysisClass::Loop()
      //## nJet
      fillVariableWithValue( "nJet_all", v_idx_jet_all.size() ) ;
      fillVariableWithValue( "nJet_PtCut", v_idx_jet_PtCut.size() ) ;
-     fillVariableWithValue( "nJet_PtCut_noOvrlpEle", v_idx_jet_PtCut_noOverlapEle.size() ) ;
+     fillVariableWithValue( "nJet_PtCut_noOvrlpEle", v_idx_jet_PtCut_noOverlapSC.size() ) ;
 
 
      //cout << "1st Ele" << endl;
@@ -295,21 +308,21 @@ void analysisClass::Loop()
 
     //cout << "1st Jet" << endl;
      //## 1st jet
-     if( v_idx_jet_PtCut_noOverlapEle.size() >= 1 ) 
+     if( v_idx_jet_PtCut_noOverlapSC.size() >= 1 ) 
        {
-	 fillVariableWithValue( "Pt1stJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]] );
-	 fillVariableWithValue( "Eta1stJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapEle[0]] );
-	 fillVariableWithValue( "mEta1stJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapEle[0]]) );
+	 fillVariableWithValue( "Pt1stJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapSC[0]] );
+	 fillVariableWithValue( "Eta1stJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapSC[0]] );
+	 fillVariableWithValue( "mEta1stJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapSC[0]]) );
        }
 
 
      //cout << "2nd Jet" << endl;
      //## 2nd jet
-     if( v_idx_jet_PtCut_noOverlapEle.size() >= 2 ) 
+     if( v_idx_jet_PtCut_noOverlapSC.size() >= 2 ) 
        {
-	 fillVariableWithValue( "Pt2ndJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]] );
-	 fillVariableWithValue( "Eta2ndJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]] );
-	 fillVariableWithValue( "mEta2ndJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapEle[1]]) );
+	 fillVariableWithValue( "Pt2ndJet_noOvrlpEle", caloJetPt[v_idx_jet_PtCut_noOverlapSC[1]] );
+	 fillVariableWithValue( "Eta2ndJet_noOvrlpEle", caloJetEta[v_idx_jet_PtCut_noOverlapSC[1]] );
+	 fillVariableWithValue( "mEta2ndJet_noOvrlpEle", fabs(caloJetEta[v_idx_jet_PtCut_noOverlapSC[1]]) );
        }
 
      //## define "2ele" and "2jets" booleans
@@ -317,7 +330,7 @@ void analysisClass::Loop()
      bool TwoSC=false;
      bool TwoJets=false;
      if( v_idx_ele_PtCut_ID_ISO_noOverlap.size() >= 2 ) TwoEle = true;
-     if( v_idx_jet_PtCut_noOverlapEle.size() >= 2 ) TwoJets = true;
+     if( v_idx_jet_PtCut_noOverlapSC.size() >= 2 ) TwoJets = true;
      if( v_idx_sc_iso.size()>= 2) TwoSC = true;
 
      //cout << "ST" << endl;
@@ -329,8 +342,8 @@ void analysisClass::Loop()
 	 calc_sT = 
 	   scPt[v_idx_sc_iso[0]]
 	   + scPt[v_idx_sc_iso[1]]
-	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[0]]
-	   + caloJetPt[v_idx_jet_PtCut_noOverlapEle[1]];
+	   + caloJetPt[v_idx_jet_PtCut_noOverlapSC[0]]
+	   + caloJetPt[v_idx_jet_PtCut_noOverlapSC[1]];
 	 fillVariableWithValue("sT", calc_sT);
        }
 
@@ -370,11 +383,11 @@ void analysisClass::Loop()
 	 h_dPhi_SS_NoMeeCut->Fill(dPhi_ScSc);
 
 	 double jetMin1 = 99, jetMin2 = 99, jetPhi1 = 99, jetPhi2 = 99;
-	 for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapEle.size(); ijet++){
+	 for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapSC.size(); ijet++){
 	   TLorentzVector jet;
-	   jet.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapEle[ijet]],
-			   caloJetEta[v_idx_jet_PtCut_noOverlapEle[ijet]],
-			   caloJetPhi[v_idx_jet_PtCut_noOverlapEle[ijet]],0);
+	   jet.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapSC[ijet]],
+			   caloJetEta[v_idx_jet_PtCut_noOverlapSC[ijet]],
+			   caloJetPhi[v_idx_jet_PtCut_noOverlapSC[ijet]],0);
 	   double dR_sc1_Jet = sc1.DeltaR(jet);
 	   double dR_sc2_Jet = sc2.DeltaR(jet);
 	   if (dR_sc1_Jet<jetMin1) {
@@ -401,11 +414,11 @@ void analysisClass::Loop()
 	   double dPhi_ScSc_Mee = sc1.DeltaR(sc2);
 	   h_dPhi_SS_MeeCut->Fill(dPhi_ScSc_Mee);
 	   double jetMin1_Mee = 99, jetMin2_Mee = 99, jetPhi1_Mee = 99, jetPhi2_Mee = 99;
-	   for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapEle.size(); ijet++){
+	   for (int ijet=0; ijet<v_idx_jet_PtCut_noOverlapSC.size(); ijet++){
 	     TLorentzVector jet_Mee;
-	     jet_Mee.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapEle[ijet]],
-			   caloJetEta[v_idx_jet_PtCut_noOverlapEle[ijet]],
-			   caloJetPhi[v_idx_jet_PtCut_noOverlapEle[ijet]],0);
+	     jet_Mee.SetPtEtaPhiM(caloJetPt[v_idx_jet_PtCut_noOverlapSC[ijet]],
+			   caloJetEta[v_idx_jet_PtCut_noOverlapSC[ijet]],
+			   caloJetPhi[v_idx_jet_PtCut_noOverlapSC[ijet]],0);
 	     double dR_sc1_Jet_Mee = sc1.DeltaR(jet_Mee);
 	     double dR_sc2_Jet_Mee = sc2.DeltaR(jet_Mee);
 	     if (dR_sc1_Jet_Mee<jetMin1_Mee) {
@@ -459,6 +472,7 @@ void analysisClass::Loop()
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC) h_goodEleSCPt_Barrel_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoJets) h_goodEleSCPt_Barrel_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Barrel_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) {
 	       h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	       h_goodEle_ST->Fill(calc_sT);
@@ -476,6 +490,7 @@ void analysisClass::Loop()
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoJets) h_goodSCPt_Barrel_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Barrel_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) {
 	       h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 	       h_goodSC_ST->Fill(calc_sT);
@@ -531,6 +546,7 @@ void analysisClass::Loop()
    h_goodEleSCEta->Write();
    h_goodEleSCPt_Barrel_2SC->Write();
    h_goodEleSCPt_Barrel_2Jets->Write();
+   h_goodEleSCPt_Barrel_2Jets_wSC->Write();
    h_goodEleSCPt_2SC2Jets->Write();
    h_goodEleSCPt_Barrel_2SC2Jets->Write();
    h_goodEleSCEta_2SC2Jets->Write();
@@ -544,6 +560,7 @@ void analysisClass::Loop()
    h_goodSCEta->Write();
    h_goodSCPt_Barrel_2SC->Write();
    h_goodSCPt_Barrel_2Jets->Write();
+   h_goodSCPt_Barrel_2Jets_wSC->Write();
    h_goodSCPt_2SC2Jets->Write();
    h_goodSCPt_Barrel_2SC2Jets->Write();
    h_goodSCEta_2SC2Jets->Write();
