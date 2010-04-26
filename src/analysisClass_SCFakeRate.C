@@ -220,8 +220,8 @@ void analysisClass::Loop()
 	     }
 
 	 //pT pre-cut + no overlaps with electrons
-       	 if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 && minDRsc>0.5)/* NO overlap with superclusters and electrons */  
-	   // && (caloJetOverlaps[ijet] & 1 << 5)==0 )/* NO overlap with muons */   
+       	 //if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 && minDRsc>0.5 && (caloJetOverlaps[ijet] & 1 << 5)==0 )/* NO overlap with superclusters and electrons or muons*/  
+       	 if( ( caloJetOverlaps[ijet] & 1 << eleIDType) == 0 )/* NO overlap with superclusters and electrons */  
 	   {
 	     v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
 	   }
@@ -455,8 +455,8 @@ void analysisClass::Loop()
 	     if (eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]<50) continue;
 	     h_goodEle_SCEcalIso->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCEta->Fill(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC) h_goodEleSCPt_Barrel_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoJets) h_goodEleSCPt_Barrel_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) {
@@ -472,8 +472,8 @@ void analysisClass::Loop()
 	   {
 	     h_goodSC_EcalIso->Fill(scHEEPEcalIso[v_idx_sc_iso[isc]]);
 	     h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
 	     h_goodSCEta->Fill(scEta[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoJets) h_goodSCPt_Barrel_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) {
