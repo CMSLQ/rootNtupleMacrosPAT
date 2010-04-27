@@ -79,7 +79,7 @@ void analysisClass::Loop()
    TH1F *h_dPhi_SJ_NoMeeCut = new TH1F ("dPhi_SJ_NoMeeCut","dPhi_SJ_NoMeeCut",100,0,6.3); h_dPhi_SJ_NoMeeCut->Sumw2();
    TH1F *h_dR_SJ_NoMeeCut = new TH1F ("dR_SJ_NoMeeCut","dR_SJ_NoMeeCut",100,0,5.0); h_dR_SJ_NoMeeCut->Sumw2();
 
-   TH2F *h_scEcalIso_Et = new TH2F ("scEcalIso_Et","scEcalIso_Et",100,0,100,100,0,1000); h_scEcalIso_Et->Sumw2();
+   TH2F *h_scEcalIso_Et = new TH2F ("scEcalIso_Et","scEcalIso_Et",200,0,20,100,0,1000); h_scEcalIso_Et->Sumw2();
    TH1F *h_scHoE = new TH1F ("scHoE","scHoE",100,0,1.0); h_scHoE->Sumw2();
    TH1F *h_scTrkIso = new TH1F ("scTrkIso","scTrkIso",100,0,50); h_scTrkIso->Sumw2();
    TH1F *h_scIetaIeta = new TH1F ("scIetaIeta","scIetaIeta",100,0,0.1); h_scIetaIeta->Sumw2();
@@ -94,7 +94,7 @@ void analysisClass::Loop()
    ////// these lines may need to be updated.                                 /////    
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
-   //for (Long64_t jentry=0; jentry<1000000;jentry++) {
+   //for (Long64_t jentry=0; jentry<1;jentry++) {
      Long64_t ientry = LoadTree(jentry);
      if (ientry < 0) break;
      nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -105,6 +105,27 @@ void analysisClass::Loop()
 
      ///Stuff to be done every event
 
+     //## HLT
+          int PassTrig=0;
+          int TrigBit1_1=int(getPreCutValue1("TriggerBits1"));
+          int TrigBit1_2=int(getPreCutValue2("TriggerBits1"));
+//           int TrigBit1_3=int(getPreCutValue3("TriggerBits1"));
+//           int TrigBit1_4=int(getPreCutValue4("TriggerBits1"));
+     
+          if (HLTResults[TrigBit1_2])
+     	 PassTrig=1;
+
+     /////To print out list of trigger names:
+//           int results_index=0;
+//           string tmp="";
+//           for (int itrig=0;itrig<hltNamesLen;itrig++){
+//             if (HLTNames[itrig]==':') {
+// 	      cout << results_index << "\t" << tmp << "   " << HLTResults[results_index] << endl;
+//      	 tmp.clear(); //reset temporary string of HLT name
+//      	 results_index++; //move to next HLT result
+//             }
+//             else tmp.push_back(HLTNames[itrig]) ;  //build up HLT name until ":" is reached, indicating end of name
+//           }
 
      //cout << "Electrons" << endl;
 
@@ -151,7 +172,6 @@ void analysisClass::Loop()
      int idx_scNextPt = -1;
     for(int isc=0;isc<scCount;isc++){
       if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
-      if (fabs(scEta[isc])>1.45) continue; 
       if (scHoE[isc]>0.05) continue;
       if (scSigmaIEIE[isc]>0.0275) continue;
       double scEt = scPt[isc];
@@ -176,7 +196,6 @@ void analysisClass::Loop()
     for(int isc=0;isc<scCount;isc++){
       if (isc==idx_scHighestPt || isc==idx_scNextPt) continue;
       if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
-      if (fabs(scEta[isc])>1.45) continue; 
       bool scPassHoE= false;
       bool scPassSigmaEE= false;
       bool scPassEcalIso= false;
@@ -190,6 +209,10 @@ void analysisClass::Loop()
       if (scPassHoE && scPassSigmaEE && scPassEcalIso && scPassTrkIso ){
 	v_idx_sc_iso.push_back(isc);
       }
+      h_scEcalIso_Et->Fill(scHEEPEcalIso[isc],scPt[isc]);
+      h_scHoE->Fill(scHoE[isc]);
+      h_scTrkIso->Fill(scHEEPTrkIso[isc]);
+      h_scIetaIeta->Fill(scSigmaIEIE[isc]);
     }
     h_NisoSC->Fill(v_idx_sc_iso.size());
 
@@ -275,6 +298,12 @@ void analysisClass::Loop()
      resetCuts();
      
      //cout << "nEle" << endl;
+
+     //## SC
+     fillVariableWithValue( "nIsoSC", v_idx_sc_iso.size() );
+
+     //## HLT
+     fillVariableWithValue( "HLT", PassTrig );
 
      //## nEle
      fillVariableWithValue( "nEle_all", v_idx_ele_all.size() ) ;
@@ -581,6 +610,11 @@ void analysisClass::Loop()
    h_dR_SS_NoMeeCut->Write();
    h_dPhi_SJ_NoMeeCut->Write();
    h_dR_SJ_NoMeeCut->Write();
+
+   h_scEcalIso_Et->Write();
+   h_scHoE->Write();
+   h_scTrkIso->Write();
+   h_scIetaIeta->Write();
 
    std::cout << "analysisClass::Loop() ends" <<std::endl;   
 }
