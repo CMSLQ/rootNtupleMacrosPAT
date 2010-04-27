@@ -112,8 +112,7 @@ void analysisClass::Loop()
 //           int TrigBit1_3=int(getPreCutValue3("TriggerBits1"));
 //           int TrigBit1_4=int(getPreCutValue4("TriggerBits1"));
      
-          if (HLTResults[TrigBit1_2])
-     	 PassTrig=1;
+          if (HLTResults[TrigBit1_1]) PassTrig=1;
 
      /////To print out list of trigger names:
 //           int results_index=0;
@@ -152,13 +151,7 @@ void analysisClass::Loop()
 	   {
 	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
 	   }
-	 
-	 if ( (eleID & 1<< 0) > 0 && eleOverlaps[iele]==0  ) 
-	   {
-	     if (eleSCPt[iele]>50) h_looseEleSCPt->Fill(eleSCPt[iele]);
-	     if (eleSCPt[iele]>50) h_looseElePt->Fill(elePt[iele]);
-	   }
-	 
+	 	 
        } //loop over electrons     
      
     //////// Fill SC histos
@@ -240,7 +233,7 @@ void analysisClass::Loop()
 	 int idx_nearest_sc = -1;
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	     {
-	       if (scPt[v_idx_sc_iso[isc]]<30) continue;
+	       if (scPt[v_idx_sc_iso[isc]]<=30) continue;
 	       TVector3 sc_vec;
 	       sc_vec.SetPtEtaPhi(scPt[v_idx_sc_iso[isc]],
 			   scEta[v_idx_sc_iso[isc]],
@@ -471,7 +464,7 @@ void analysisClass::Loop()
 
 	   for(int iele=0;iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size();iele++)
 	     {
-	       if ((eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]>50) && (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45))
+	       if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45)
 		 h_goodEleSCPt_PASSMee->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     }
 	   for(int isc=0;isc<v_idx_sc_iso.size();isc++)
@@ -494,7 +487,6 @@ void analysisClass::Loop()
      //// Fill fake rate pltos
 	 for(int iele=0;iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size();iele++)
 	   {
-	     if (eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]<50) continue;
 	     h_goodEle_SCEcalIso->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCEta->Fill(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
@@ -534,8 +526,8 @@ void analysisClass::Loop()
      if( passedCut("sT")){
 	 for(int iele=0;iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size();iele++)
 	   {
-	     if (eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]>50) h_goodEleSCPt_PASS->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]>50) h_goodEle_SCEcalIso_PASS->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     h_goodEleSCPt_PASS->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     h_goodEle_SCEcalIso_PASS->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	   }
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	   {
