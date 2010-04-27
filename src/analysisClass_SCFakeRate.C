@@ -233,7 +233,6 @@ void analysisClass::Loop()
 	 int idx_nearest_sc = -1;
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	     {
-	       if (scPt[v_idx_sc_iso[isc]]<=30) continue;
 	       TVector3 sc_vec;
 	       sc_vec.SetPtEtaPhi(scPt[v_idx_sc_iso[isc]],
 			   scEta[v_idx_sc_iso[isc]],
