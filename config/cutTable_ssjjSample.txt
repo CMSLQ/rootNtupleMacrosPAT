@@ -1,0 +1,51 @@
+#
+#############################     Example of file with list of cuts
+#
+#
+#------------------------ Preliminary cut variables and values (cut level -1) here -----------------------------
+# This first list of variable names and values are used to pass configurable values to the user code associated 
+# to a variable name.
+# The user can retrieve the values associated to a variable name via a provided function call
+# [e.g. getPreCutValue1("eleFidRegion") and similarly for value2, value3 and value4 ]
+# The idea is that the user can use these values to define the list of objects (electrons, jets, etc.) used in 
+# analysis. No cut is automatically evaluated on these variables and the cut level must be equal to -1. 
+# Variable names must be unique.
+#
+#VariableName	      value1	   value2		value3		value4		level
+#------------	      ------------ -------------	------------	-------------	-----
+ele_PtCut	      20	   -			-		-		-1
+sc_PtCut	      30	   -			-		-		-1
+eleIDType	      5		   -			-		-		-1
+# eleType --> bit 0: eidRobustLoose, bit 1: eidRobustTight, bit 2: eidLoose,  bit 3: eidTight,  bit 4: eidRobustHighEnergy
+jet_PtCut	      30	   -			-		-		-1
+#
+#
+#--------------------------------- Cuts (level 0,1,2,3 ... n) below --------------------------------------------
+# The cut variable names, cut boundaries and histogram binnings are provided here by the user.
+# In the event loop of the analysisClass_template.C, the user have to fill each variable with its value using
+# a provided function call [ e.g. fillVariableWithValue("nEleFinal", number_of_electrons) ]
+# The variable names in the user code has to match the names provided here.
+# Variable names must be unique.
+# The cut will be declared "passed" if
+#    ( minValue1 < VariableName <= maxValue1 ) 
+# in case only the first range (minValue1, maxValue1) is provided, 
+# otherwise the cut will be declared "passed" if
+#    ( minValue1 < VariableName <= maxValue1 )  OR  ( minValue2 < VariableName <= maxValue2 )
+# in case even the second range (minValue2, maxValue2) is provided.
+# The level of the cut (0,1,2 ... n) is provided by the user and can be used in the code to easily determine if
+# groups of same-level cuts have passed or failed.
+#
+#VariableName			minValue1(<) maxValue1(>=)	minValue2(<)	maxValue2(>=)	level	histoNbinsMinMax
+#------------			------------ -------------	------------	-------------	-----	----------------
+nSc_PtCut_EcalIso		1	   +inf			-		-		2	16 -0.5 15.5
+Pt1stSc_EcalIso			30	   +inf			-		-		3	100 0 1000
+Pt2ndSc_EcalIso			30	   +inf			-		-		3	100 0 1000
+mEta1stSc_EcalIso		-inf	   1.45			-		-		3	50 0 5
+mEta2ndSc_EcalIso		-inf	   1.45			-		-		3	50 0 5
+nJet_PtCut_noOvrlpEle		1	   +inf			-		-		2	16 -0.5 15.5
+Pt1stJet_noOvrlpEle		30	   +inf			-		-		3	100 0 1000
+Pt2ndJet_noOvrlpEle		30	   +inf			-		-		3	100 0 1000
+mEta1stJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5   
+mEta2ndJet_noOvrlpEle		-inf	   3.0			-		-		3	50 0 5
+Mee				80	   +inf			-		-		5	100 0 1000
+sT				160	   +inf			-		-		5	200 0 2000
