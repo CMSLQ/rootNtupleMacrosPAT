@@ -79,7 +79,7 @@ void analysisClass::Loop()
    TH1F *h_dPhi_SJ_NoMeeCut = new TH1F ("dPhi_SJ_NoMeeCut","dPhi_SJ_NoMeeCut",100,0,6.3); h_dPhi_SJ_NoMeeCut->Sumw2();
    TH1F *h_dR_SJ_NoMeeCut = new TH1F ("dR_SJ_NoMeeCut","dR_SJ_NoMeeCut",100,0,5.0); h_dR_SJ_NoMeeCut->Sumw2();
 
-   TH2F *h_scEcalIso_Et = new TH2F ("scEcalIso_Et","scEcalIso_Et",200,0,20,100,0,1000); h_scEcalIso_Et->Sumw2();
+   TH2F *h_scEcalIso_Et = new TH2F ("scEcalIso_Et","scEcalIso_Et",100,0,1000,200,0,20); h_scEcalIso_Et->Sumw2();
    TH1F *h_scHoE = new TH1F ("scHoE","scHoE",100,0,1.0); h_scHoE->Sumw2();
    TH1F *h_scTrkIso = new TH1F ("scTrkIso","scTrkIso",100,0,50); h_scTrkIso->Sumw2();
    TH1F *h_scIetaIeta = new TH1F ("scIetaIeta","scIetaIeta",100,0,0.1); h_scIetaIeta->Sumw2();
@@ -202,13 +202,18 @@ void analysisClass::Loop()
       if (scPassHoE && scPassSigmaEE && scPassEcalIso && scPassTrkIso ){
 	v_idx_sc_iso.push_back(isc);
       }
-      h_scEcalIso_Et->Fill(scHEEPEcalIso[isc],scPt[isc]);
-      h_scHoE->Fill(scHoE[isc]);
-      h_scTrkIso->Fill(scHEEPTrkIso[isc]);
-      h_scIetaIeta->Fill(scSigmaIEIE[isc]);
     }
-    h_NisoSC->Fill(v_idx_sc_iso.size());
 
+    int BarrelSC=0;
+    for(int SC=0;SC< scCount;SC++){
+      if (fabs(scEta[SC])>1.45) continue;
+      BarrelSC++;
+      h_scEcalIso_Et->Fill(scPt[SC],scHEEPEcalIso[SC]);
+      h_scHoE->Fill(scHoE[SC]);
+      h_scTrkIso->Fill(scHEEPTrkIso[SC]);
+      h_scIetaIeta->Fill(scSigmaIEIE[SC]);
+    }
+    h_NisoSC->Fill(BarrelSC);
      //cout << "Jets" << endl;
 
      //## Jets

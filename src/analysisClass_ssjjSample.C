@@ -85,7 +85,7 @@ void analysisClass::Loop()
      //## Electrons
      vector<int> v_idx_ele_all;
      vector<int> v_idx_ele_PtCut;
-     vector<int> v_idx_ele_PtCut_ID_ISO_noOverlap;
+     vector<int> v_idx_ele_PtCut_final;
 
      int eleIDType = getPreCutValue1("eleIDType");
 
@@ -97,7 +97,6 @@ void analysisClass::Loop()
 
 	 //pT pre-cut on ele
 	 if ( elePt[iele] < getPreCutValue1("ele_PtCut") ) continue;
-	 if (fabs(eleEta[iele])>1.45) continue; 
 	 
 	 v_idx_ele_PtCut.push_back(iele);
 	 
@@ -107,7 +106,7 @@ void analysisClass::Loop()
 	 //if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
 	 if ( (eleID & 1<< eleIDType) > 0  && eleOverlaps[iele]==0 ) 
 	   {
-	     v_idx_ele_PtCut_ID_ISO_noOverlap.push_back(iele);
+	     v_idx_ele_PtCut_final.push_back(iele);
 	     h_HEEPallPt->Fill(elePt[iele]);
 	     h_HEEPallEta->Fill(eleEta[iele]);
 	   }
@@ -128,7 +127,6 @@ void analysisClass::Loop()
      int idx_scNextPt = -1;
     for(int isc=0;isc<scCount;isc++){
       if ( scPt[isc] < getPreCutValue1("sc_PtCut") ) continue;
-      if (fabs(scEta[isc])>1.45) continue;
       if (scHoE[isc]>0.05) continue;
       if (scSigmaIEIE[isc]>0.0275) continue;
       double scEt = scPt[isc];
@@ -153,7 +151,6 @@ void analysisClass::Loop()
     for(int isc=0;isc<scCount;isc++){
       if (isc==idx_scHighestPt || isc==idx_scNextPt) continue;
       if ( scPt[isc] < getPreCutValue1("sc_PtCut") ) continue;
-      if (fabs(scEta[isc])>1.45) continue;
       bool scPassHoE= false;
       bool scPassSigmaEE= false;
       bool scPassEcalIso= false;
@@ -192,7 +189,6 @@ void analysisClass::Loop()
 	 int idx_nearest_sc = -1;
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	     {
-	       if (scPt[v_idx_sc_iso[isc]]<30) continue;
 	       TVector3 sc_vec;
 	       sc_vec.SetPtEtaPhi(scPt[v_idx_sc_iso[isc]],
 			   scEta[v_idx_sc_iso[isc]],
@@ -306,29 +302,29 @@ void analysisClass::Loop()
      evaluateCuts();
 
      // Fill histograms and do analysis based on cut evaluation
-     for (int iele=0; iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size(); iele++){
-       if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) {
-	       h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+     for (int iele=0; iele<v_idx_ele_PtCut_final.size(); iele++){
+       if (fabs(eleSCEta[v_idx_ele_PtCut_final[iele]])<1.45 && TwoSc && TwoJets) {
+	       h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	       if (passedCut("mEta1stJet_noOvrlpEle") && passedCut ("mEta2ndJet_noOvrlpEle") )
-		 h_goodEleSCPt_Barrel_2SC2Jets_JetEta->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+		 h_goodEleSCPt_Barrel_2SC2Jets_JetEta->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	     }
 
        if ( passedCut("nSc_PtCut_EcalIso") && passedCut("mEta1stSc_EcalIso") && passedCut("mEta2ndSc_EcalIso") ){
-	   h_HEEP_2SC_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	   h_HEEP_2SC_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	   if ( passedCut("nJet_PtCut_noOvrlpEle") && passedCut("mEta1stJet_noOvrlpEle") && passedCut ("mEta2ndJet_noOvrlpEle") ) {
-	     h_HEEP_2SC2Jets_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     h_HEEP_2SC2Jets_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	     if ( passedCut("Mee") ){
-	       h_HEEP_Mee_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	       h_HEEP_Mee_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	       h_HEEP_PassMee_St->Fill(calc_sT);
 	       if ( passedCut("sT") )
-		 h_HEEP_Mee_St_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+		 h_HEEP_Mee_St_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	     }
 	   }
        }
 
      for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	   {
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) {
+	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSc && TwoJets) {
 	       h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 	       if (passedCut("mEta1stJet_noOvrlpEle") && passedCut ("mEta2ndJet_noOvrlpEle") )
 		 h_goodSCPt_Barrel_2SC2Jets_JetEta->Fill(scPt[v_idx_sc_iso[isc]]);
@@ -337,22 +333,22 @@ void analysisClass::Loop()
 
 
      if ( passedCut("sT") )
-	       h_HEEP_St_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	       h_HEEP_St_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
      }
 
      if( passedCut("all") ) 
        {
-	 for (int iele=0; iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size(); iele++){
-	   h_HEEP_All_Pt->Fill(elePt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	   h_matchedPt1stSc->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	 for (int iele=0; iele<v_idx_ele_PtCut_final.size(); iele++){
+	   h_HEEP_All_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
+	   h_matchedPt1stSc->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	 }
 
-	 h_NeleHEEP->Fill(v_idx_ele_PtCut_ID_ISO_noOverlap.size());
+	 h_NeleHEEP->Fill(v_idx_ele_PtCut_final.size());
 	 h_NscISO->Fill(v_idx_sc_iso.size());
 
 	 double probSC1 = 0, probSC2 = 0;
-	 probSC1 = 0.000173 + (0.00004895*scPt[v_idx_sc_iso[0]]);
-	 probSC2 = 0.000173 + (0.00004895*scPt[v_idx_sc_iso[1]]);
+	 probSC1 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[0]]);
+	 probSC2 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[1]]);
 // 	 double probSC1 = 0.01, probSC2 = 0.01;
 	 h_probPt1stSc->Fill(scPt[v_idx_sc_iso[0]],probSC1+probSC2);
 
@@ -360,9 +356,9 @@ void analysisClass::Loop()
 
 	 ///////Calculate FakeRate based on events that pass
 
-	 for (int iele=0; iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size(); iele++)
+	 for (int iele=0; iele<v_idx_ele_PtCut_final.size(); iele++)
 	   {
-		 if (eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]>25) h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+		 if (eleSCPt[v_idx_ele_PtCut_final[iele]]>25) h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	   }
 
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++){
