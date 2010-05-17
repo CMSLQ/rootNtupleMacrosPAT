@@ -35,6 +35,8 @@ void analysisClass::Loop()
    TH1F *h_Mej = new TH1F ("Mej","Mej",200,0,2000);  h_Mej->Sumw2();
    TH1F *h_probPt1stSc = new TH1F ("probPt1stSc","probPt1stSc",200,0,1000);  h_probPt1stSc->Sumw2();  //N events based on fake rate
    TH1F *h_matchedPt1stSc = new TH1F ("matchedPt1stSc","matchedPt1stSc",200,0,1000);  h_matchedPt1stSc->Sumw2();  //N events with at least 1 HEEP ele
+   TH1F *h_probSt = new TH1F ("probSt","probSt",200,0,1000);  h_probSt->Sumw2();  //N events based on fake rate
+   TH1F *h_matchedSt = new TH1F ("matchedSt","matchedSt",200,0,1000);  h_matchedSt->Sumw2();  //N events with at least 1 HEEP ele
    TH1F *h_NeleHEEP = new TH1F ("NeleHEEP","NeleHEEP",4,-0.5,3.5);  h_NeleHEEP->Sumw2();
    TH1F *h_NscISO = new TH1F ("NscISO","NscISO",4,-0.5,3.5);  h_NscISO->Sumw2();
    TH1F *h_dRsc = new TH1F ("dRsc","dRsc",500,-0.01,4.99); h_dRsc->Sumw2();
@@ -340,6 +342,7 @@ void analysisClass::Loop()
 	 for (int iele=0; iele<v_idx_ele_PtCut_final.size(); iele++){
 	   h_HEEP_All_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	   h_matchedPt1stSc->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
+	   h_matchedSt->Fill(calc_sT);
 	 }
 
 	 h_NeleHEEP->Fill(v_idx_ele_PtCut_final.size());
@@ -354,19 +357,21 @@ void analysisClass::Loop()
 // 	 probSC1 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[0]]);
 // 	 probSC2 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[1]]);
 // 	 double probSC1 = 0.01, probSC2 = 0.01;
-	 h_probPt1stSc->Fill(scPt[v_idx_sc_iso[0]],probSC1+probSC2);
 
+
+	 h_probPt1stSc->Fill(scPt[v_idx_sc_iso[0]],probSC1+probSC2);
+	 h_probSt->Fill(calc_sT,probSC1+probSC2);
 
 
 	 ///////Calculate FakeRate based on events that pass
 
 	 for (int iele=0; iele<v_idx_ele_PtCut_final.size(); iele++)
 	   {
-		 if (eleSCPt[v_idx_ele_PtCut_final[iele]]>25) h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
+	     h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	   }
 
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++){
-	     if (scPt[v_idx_sc_iso[isc]]>25) h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
+	   h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
 	 }
 
        }  //end if passedCut("all")
@@ -380,6 +385,8 @@ void analysisClass::Loop()
    h_Mej->Write();
    h_probPt1stSc->Write();
    h_matchedPt1stSc->Write();
+   h_probSt->Write();
+   h_matchedSt->Write();
    h_NeleHEEP->Write();
    h_NscISO->Write();
    h_dRsc->Write();
