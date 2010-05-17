@@ -84,7 +84,13 @@ void analysisClass::Loop()
    TH1F *h_scTrkIso = new TH1F ("scTrkIso","scTrkIso",100,0,50); h_scTrkIso->Sumw2();
    TH1F *h_scIetaIeta = new TH1F ("scIetaIeta","scIetaIeta",100,0,0.1); h_scIetaIeta->Sumw2();
 
+   TH1F *h_eta_failHLT = new TH1F("eta_failHLT","eta_failHLT",500,-3.0,3.0);
+   TH1F *h_phi_failHLT = new TH1F("phi_failHLT","phi_failHLT",100,-3.5,3.5);
+
    /////////initialize variables
+   double FailRate = 0;
+   double NFailHLT = 0;
+   double HasSC = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
    std::cout << "analysisClass::Loop(): nentries = " << nentries << std::endl;   
@@ -94,11 +100,11 @@ void analysisClass::Loop()
    ////// these lines may need to be updated.                                 /////    
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
-   //for (Long64_t jentry=0; jentry<1;jentry++) {
+   //for (Long64_t jentry=0; jentry<100000;jentry++) {
      Long64_t ientry = LoadTree(jentry);
      if (ientry < 0) break;
      nb = fChain->GetEntry(jentry);   nbytes += nb;
-     if(jentry < 10 || jentry%100000 == 0) std::cout << "analysisClass::Loop(): jentry = " << jentry << std::endl;   
+     if(jentry < 10 || jentry%1000 == 0) std::cout << "analysisClass::Loop(): jentry = " << jentry << std::endl;   
      // if (Cut(ientry) < 0) continue;
 
      ////////////////////// User's code starts here ///////////////////////
@@ -109,8 +115,6 @@ void analysisClass::Loop()
           int PassTrig=0;
           int TrigBit1_1=int(getPreCutValue1("TriggerBits1"));
           int TrigBit1_2=int(getPreCutValue2("TriggerBits1"));
-//           int TrigBit1_3=int(getPreCutValue3("TriggerBits1"));
-//           int TrigBit1_4=int(getPreCutValue4("TriggerBits1"));
      
           if (HLTResults[TrigBit1_1]) PassTrig=1;
 
@@ -204,16 +208,14 @@ void analysisClass::Loop()
       }
     }
 
-    int BarrelSC=0;
-    for(int SC=0;SC< scCount;SC++){
-      if (fabs(scEta[SC])>1.45) continue;
-      BarrelSC++;
-      h_scEcalIso_Et->Fill(scPt[SC],scHEEPEcalIso[SC]);
-      h_scHoE->Fill(scHoE[SC]);
-      h_scTrkIso->Fill(scHEEPTrkIso[SC]);
-      h_scIetaIeta->Fill(scSigmaIEIE[SC]);
-    }
-    h_NisoSC->Fill(BarrelSC);
+    vector<int> v_idx_sc_iso_barrel;
+    for(int isc=0; isc<v_idx_sc_iso.size(); isc++)
+      {
+      if (fabs(scEta[v_idx_sc_iso[isc]])>1.45) continue;
+      v_idx_sc_iso_barrel.push_back(v_idx_sc_iso[isc]);
+      }
+    h_NisoSC->Fill(v_idx_sc_iso_barrel.size());
+
      //cout << "Jets" << endl;
 
      //## Jets
@@ -259,7 +261,6 @@ void analysisClass::Loop()
 	     v_idx_jet_PtCut_noOverlapEle.push_back(ijet);
 	   }
 
-	 //NOTE: We should verify that caloJetOverlaps match with the code above
 
        }   
 
@@ -298,6 +299,7 @@ void analysisClass::Loop()
 
      //## SC
      fillVariableWithValue( "nIsoSC", v_idx_sc_iso.size() );
+     //fillVariableWithValue( "nIsoSC",v_idx_sc_iso_barrel.size() );
 
      //## HLT
      fillVariableWithValue( "HLT", PassTrig );
@@ -485,8 +487,16 @@ void analysisClass::Loop()
      
      // Evaluate cuts (but do not apply them)
      evaluateCuts();
+     if (passedCut("nIsoSC")){
+       HasSC++;
+     }
 
      // Fill histograms and do analysis based on cut evaluation
+     if (v_idx_sc_iso.size()>0 && !passedCut("HLT")){
+       NFailHLT++;
+       h_eta_failHLT->Fill(scEta[v_idx_sc_iso[0]]);
+       h_phi_failHLT->Fill(scPhi[v_idx_sc_iso[0]]);
+     }
 
      //// Fill fake rate pltos
 	 for(int iele=0;iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size();iele++)
@@ -540,19 +550,6 @@ void analysisClass::Loop()
 	   }
      }
 
-//      if( passedCut("Mee") && passedCut("sT")){
-// 	 for(int iele=0;iele<v_idx_ele_PtCut_ID_ISO_noOverlap.size();iele++)
-// 	   {
-// 	     if ((eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]>50) && (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45))
-// 	       h_goodEleSCPt_PASSMee->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-// 	   }
-// 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
-// 	   {
-// 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45)
-// 	       h_goodSCPt_PASSMee->Fill(scPt[v_idx_sc_iso[isc]]);
-// 	   }
-
-//      }
 
 
 
@@ -611,6 +608,12 @@ void analysisClass::Loop()
    h_scHoE->Write();
    h_scTrkIso->Write();
    h_scIetaIeta->Write();
+
+   h_eta_failHLT->Write();
+   h_phi_failHLT->Write();
+
+   FailRate = 100 * NFailHLT/HasSC;
+   //cout << "NFail: " << NFailHLT << "\t" << "FailRate: " << FailRate << " %" << endl;
 
    std::cout << "analysisClass::Loop() ends" <<std::endl;   
 }
