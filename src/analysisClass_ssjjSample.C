@@ -103,7 +103,6 @@ void analysisClass::Loop()
 
 	 //ID + ISO + NO overlap with good muons	 	
 	 int eleID = elePassID[iele];
-	 //if ( (eleID & 1<< eleIDType) > 0  && elePassIso[iele]==1 && eleOverlaps[iele]==0 ) 
 	 if ( (eleID & 1<< eleIDType) > 0  && eleOverlaps[iele]==0 ) 
 	   {
 	     v_idx_ele_PtCut_final.push_back(iele);
@@ -214,7 +213,7 @@ void analysisClass::Loop()
 
 
      //## nEle
-     fillVariableWithValue( "nSc_PtCut_EcalIso", v_idx_sc_iso.size() ) ;
+     fillVariableWithValue( "nSc_PtCut_Iso", v_idx_sc_iso.size() ) ;
 
      //cout << "nJet" << endl;
 
@@ -227,14 +226,14 @@ void analysisClass::Loop()
      double MT=-999;
      if( v_idx_sc_iso.size() >= 1 ) 
        {
-	 fillVariableWithValue( "Pt1stSc_EcalIso", scPt[v_idx_sc_iso[0]] );
-	 fillVariableWithValue( "mEta1stSc_EcalIso", fabs(scEta[v_idx_sc_iso[0]]) );
+	 fillVariableWithValue( "Pt1stSc_Iso", scPt[v_idx_sc_iso[0]] );
+	 fillVariableWithValue( "mEta1stSc_Iso", fabs(scEta[v_idx_sc_iso[0]]) );
        }
 
       if( v_idx_sc_iso.size() >= 2 ) 
        {
-	 fillVariableWithValue( "Pt2ndSc_EcalIso", scPt[v_idx_sc_iso[1]] );
-	 fillVariableWithValue( "mEta2ndSc_EcalIso", fabs(scEta[v_idx_sc_iso[1]]) );
+	 fillVariableWithValue( "Pt2ndSc_Iso", scPt[v_idx_sc_iso[1]] );
+	 fillVariableWithValue( "mEta2ndSc_Iso", fabs(scEta[v_idx_sc_iso[1]]) );
        }
 
     //cout << "1st Jet" << endl;
@@ -309,7 +308,7 @@ void analysisClass::Loop()
 		 h_goodEleSCPt_Barrel_2SC2Jets_JetEta->Fill(eleSCPt[v_idx_ele_PtCut_final[iele]]);
 	     }
 
-       if ( passedCut("nSc_PtCut_EcalIso") && passedCut("mEta1stSc_EcalIso") && passedCut("mEta2ndSc_EcalIso") ){
+       if ( passedCut("nSc_PtCut_Iso") && passedCut("mEta1stSc_Iso") && passedCut("mEta2ndSc_Iso") ){
 	   h_HEEP_2SC_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
 	   if ( passedCut("nJet_PtCut_noOvrlpEle") && passedCut("mEta1stJet_noOvrlpEle") && passedCut ("mEta2ndJet_noOvrlpEle") ) {
 	     h_HEEP_2SC2Jets_Pt->Fill(elePt[v_idx_ele_PtCut_final[iele]]);
@@ -347,8 +346,13 @@ void analysisClass::Loop()
 	 h_NscISO->Fill(v_idx_sc_iso.size());
 
 	 double probSC1 = 0, probSC2 = 0;
-	 probSC1 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[0]]);
-	 probSC2 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[1]]);
+	 if (fabs(scEta[v_idx_sc_iso[0]])<1.442) probSC1 = 0.0023;
+	 if (fabs(scEta[v_idx_sc_iso[0]])>1.56) probSC1 = 0.05;
+	 if (fabs(scEta[v_idx_sc_iso[1]])<1.442) probSC2 = 0.0023;
+	 if (fabs(scEta[v_idx_sc_iso[1]])>1.56) probSC2 = 0.05;
+      
+// 	 probSC1 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[0]]);
+// 	 probSC2 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[1]]);
 // 	 double probSC1 = 0.01, probSC2 = 0.01;
 	 h_probPt1stSc->Fill(scPt[v_idx_sc_iso[0]],probSC1+probSC2);
 
