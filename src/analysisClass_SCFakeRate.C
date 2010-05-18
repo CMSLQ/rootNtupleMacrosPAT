@@ -38,14 +38,19 @@ void analysisClass::Loop()
    TH2F *h_dR_JetSC_EcalIso = new TH2F("dR_JetSC_EcalIso","dR_JetSC_EcalIso",600,0,3.0,500,0,10); h_dR_JetSC->Sumw2();
    TH1F *h_NisoSC = new TH1F ("NisoSC","NisoSC",6,-0.5,5.5);  h_NisoSC->Sumw2();
    TH1F *h_goodEleSCPt = new TH1F ("goodEleSCPt","goodEleSCPt",200,0,1000); h_goodEleSCPt->Sumw2();
-   TH1F *h_goodEleSCPt_Barrel = new TH1F ("goodEleSCPt_Barrel","goodEleSCPt_Barrel",200,0,1000); h_goodEleSCPt_Barrel->Sumw2();
    TH1F *h_goodEleSCEta = new TH1F ("goodEleSCEta","goodEleSCEta",100,-3.,3.); h_goodEleSCEta->Sumw2();
+   TH1F *h_goodEleSCPt_2SC2Jets = new TH1F ("goodEleSCPt_2SC2Jets","goodEleSCPt_2SC2Jets",200,0,1000); h_goodEleSCPt_2SC2Jets->Sumw2();
+   TH1F *h_goodEleSCEta_2SC2Jets = new TH1F ("goodEleSCEta_2SC2Jets","goodEleSCEta_2SC2Jets",100,-3.,3.); h_goodEleSCEta_2SC2Jets->Sumw2();
+   TH1F *h_goodEleSCPt_Barrel = new TH1F ("goodEleSCPt_Barrel","goodEleSCPt_Barrel",200,0,1000); h_goodEleSCPt_Barrel->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2SC = new TH1F ("goodEleSCPt_Barrel_2SC","goodEleSCPt_Barrel_2SC",200,0,1000); h_goodEleSCPt_Barrel_2SC->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2Jets = new TH1F ("goodEleSCPt_Barrel_2Jets","goodEleSCPt_Barrel_2Jets",200,0,1000); h_goodEleSCPt_Barrel_2Jets->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2Jets_wSC = new TH1F ("goodEleSCPt_Barrel_2Jets_wSC","goodEleSCPt_Barrel_2Jets_wSC",200,0,1000); h_goodEleSCPt_Barrel_2Jets_wSC->Sumw2();
-   TH1F *h_goodEleSCPt_2SC2Jets = new TH1F ("goodEleSCPt_2SC2Jets","goodEleSCPt_2SC2Jets",200,0,1000); h_goodEleSCPt_2SC2Jets->Sumw2();
    TH1F *h_goodEleSCPt_Barrel_2SC2Jets = new TH1F ("goodEleSCPt_Barrel_2SC2Jets","goodEleSCPt_Barrel_2SC2Jets",200,0,1000); h_goodEleSCPt_Barrel_2SC2Jets->Sumw2();
-   TH1F *h_goodEleSCEta_2SC2Jets = new TH1F ("goodEleSCEta_2SC2Jets","goodEleSCEta_2SC2Jets",100,-3.,3.); h_goodEleSCEta_2SC2Jets->Sumw2();
+   TH1F *h_goodEleSCPt_Endcap = new TH1F ("goodEleSCPt_Endcap","goodEleSCPt_Endcap",200,0,1000); h_goodEleSCPt_Endcap->Sumw2();
+   TH1F *h_goodEleSCPt_Endcap_2SC = new TH1F ("goodEleSCPt_Endcap_2SC","goodEleSCPt_Endcap_2SC",200,0,1000); h_goodEleSCPt_Endcap_2SC->Sumw2();
+   TH1F *h_goodEleSCPt_Endcap_2Jets = new TH1F ("goodEleSCPt_Endcap_2Jets","goodEleSCPt_Endcap_2Jets",200,0,1000); h_goodEleSCPt_Endcap_2Jets->Sumw2();
+   TH1F *h_goodEleSCPt_Endcap_2Jets_wSC = new TH1F ("goodEleSCPt_Endcap_2Jets_wSC","goodEleSCPt_Endcap_2Jets_wSC",200,0,1000); h_goodEleSCPt_Endcap_2Jets_wSC->Sumw2();
+   TH1F *h_goodEleSCPt_Endcap_2SC2Jets = new TH1F ("goodEleSCPt_Endcap_2SC2Jets","goodEleSCPt_Endcap_2SC2Jets",200,0,1000); h_goodEleSCPt_Endcap_2SC2Jets->Sumw2();
    TH1F *h_goodEle_ST = new TH1F ("goodEle_ST","goodEle_ST",220,-100,1000); h_goodEle_ST->Sumw2();
    TH1F *h_goodEle_SCEcalIso = new TH1F ("goodEle_SCEcalIso","goodEle_SCEcalIso",200,0,100); h_goodEle_SCEcalIso->Sumw2();
    TH1F *h_goodEle_SCEcalIso_PASS = new TH1F ("goodEle_SCEcalIso_PASS","goodEle_SCEcalIso_PASS",100,0,10); h_goodEle_SCEcalIso_PASS->Sumw2();
@@ -55,14 +60,19 @@ void analysisClass::Loop()
    TH1F *h_goodEleSCPt_PASS = new TH1F ("goodEleSCPt_PASS","goodEleSCPt_PASS",200,0,1000); h_goodEleSCPt_PASS->Sumw2();
    TH1F *h_goodEleSCPt_PASSMee = new TH1F ("goodEleSCPt_PASSMee","goodEleSCPt_PASSMee",200,0,1000); h_goodEleSCPt_PASSMee->Sumw2();
    TH1F *h_goodSCPt = new TH1F ("goodSCPt","goodSCPt",200,0,1000); h_goodSCPt->Sumw2();
-   TH1F *h_goodSCPt_Barrel = new TH1F ("goodSCPt_Barrel","goodSCPt_Barrel",200,0,1000); h_goodSCPt_Barrel->Sumw2();
    TH1F *h_goodSCEta = new TH1F ("goodSCEta","goodSCEta",100,-3.,3.); h_goodSCEta->Sumw2();
+   TH1F *h_goodSCPt_2SC2Jets = new TH1F ("goodSCPt_2SC2Jets","goodSCPt_2SC2Jets",200,0,1000); h_goodSCPt_2SC2Jets->Sumw2();
+   TH1F *h_goodSCEta_2SC2Jets = new TH1F ("goodSCEta_2SC2Jets","goodSCEta_2SC2Jets",100,-3.,3.); h_goodSCEta_2SC2Jets->Sumw2();
+   TH1F *h_goodSCPt_Barrel = new TH1F ("goodSCPt_Barrel","goodSCPt_Barrel",200,0,1000); h_goodSCPt_Barrel->Sumw2();
    TH1F *h_goodSCPt_Barrel_2SC = new TH1F ("goodSCPt_Barrel_2SC","goodSCPt_Barrel_2SC",200,0,1000); h_goodSCPt_Barrel_2SC->Sumw2();
    TH1F *h_goodSCPt_Barrel_2Jets = new TH1F ("goodSCPt_Barrel_2Jets","goodSCPt_Barrel_2Jets",200,0,1000); h_goodSCPt_Barrel_2Jets->Sumw2();
    TH1F *h_goodSCPt_Barrel_2Jets_wSC = new TH1F ("goodSCPt_Barrel_2Jets_wSC","goodSCPt_Barrel_2Jets_wSC",200,0,1000); h_goodSCPt_Barrel_2Jets_wSC->Sumw2();
-   TH1F *h_goodSCPt_2SC2Jets = new TH1F ("goodSCPt_2SC2Jets","goodSCPt_2SC2Jets",200,0,1000); h_goodSCPt_2SC2Jets->Sumw2();
    TH1F *h_goodSCPt_Barrel_2SC2Jets = new TH1F ("goodSCPt_Barrel_2SC2Jets","goodSCPt_Barrel_2SC2Jets",200,0,1000); h_goodSCPt_Barrel_2SC2Jets->Sumw2();
-   TH1F *h_goodSCEta_2SC2Jets = new TH1F ("goodSCEta_2SC2Jets","goodSCEta_2SC2Jets",100,-3.,3.); h_goodSCEta_2SC2Jets->Sumw2();
+   TH1F *h_goodSCPt_Endcap = new TH1F ("goodSCPt_Endcap","goodSCPt_Endcap",200,0,1000); h_goodSCPt_Endcap->Sumw2();
+   TH1F *h_goodSCPt_Endcap_2SC = new TH1F ("goodSCPt_Endcap_2SC","goodSCPt_Endcap_2SC",200,0,1000); h_goodSCPt_Endcap_2SC->Sumw2();
+   TH1F *h_goodSCPt_Endcap_2Jets = new TH1F ("goodSCPt_Endcap_2Jets","goodSCPt_Endcap_2Jets",200,0,1000); h_goodSCPt_Endcap_2Jets->Sumw2();
+   TH1F *h_goodSCPt_Endcap_2Jets_wSC = new TH1F ("goodSCPt_Endcap_2Jets_wSC","goodSCPt_Endcap_2Jets_wSC",200,0,1000); h_goodSCPt_Endcap_2Jets_wSC->Sumw2();
+   TH1F *h_goodSCPt_Endcap_2SC2Jets = new TH1F ("goodSCPt_Endcap_2SC2Jets","goodSCPt_Endcap_2SC2Jets",200,0,1000); h_goodSCPt_Endcap_2SC2Jets->Sumw2();
    TH1F *h_goodSC_ST = new TH1F ("goodSC_ST","goodSC_ST",220,-100,1000); h_goodSC_ST->Sumw2();
    TH1F *h_goodSCPt_PASS = new TH1F ("goodSCPt_PASS","goodSCPt_PASS",200,0,1000); h_goodSCPt_PASS->Sumw2();
    TH1F *h_goodSCPt_PASSMee = new TH1F ("goodSCPt_PASSMee","goodSCPt_PASSMee",200,0,1000); h_goodSCPt_PASSMee->Sumw2();
@@ -504,17 +514,23 @@ void analysisClass::Loop()
 	     h_goodEle_SCEcalIso->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCEta->Fill(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC) h_goodEleSCPt_Barrel_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoJets) h_goodEleSCPt_Barrel_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Barrel_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) {
-	       h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	       h_goodEle_ST->Fill(calc_sT);
-	     }
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56) h_goodEleSCPt_Endcap->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoSC) h_goodEleSCPt_Endcap_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoJets) h_goodEleSCPt_Endcap_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Endcap_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoSC && TwoJets) h_goodEleSCPt_Endcap_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+
 	     if (TwoSC && TwoJets) {
 	       h_goodEleSCPt_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	       h_goodEleSCEta_2SC2Jets->Fill(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	       h_goodEle_ST->Fill(calc_sT);
 	     }
 	   }
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
@@ -522,17 +538,23 @@ void analysisClass::Loop()
 	     h_goodSC_EcalIso->Fill(scHEEPEcalIso[v_idx_sc_iso[isc]]);
 	     h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
 	     h_goodSCEta->Fill(scEta[v_idx_sc_iso[isc]]);
+
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoJets) h_goodSCPt_Barrel_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Barrel_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) {
-	       h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
-	       h_goodSC_ST->Fill(calc_sT);
-	     }
+	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56) h_goodSCPt_Endcap->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoSC) h_goodSCPt_Endcap_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoJets) h_goodSCPt_Endcap_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Endcap_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoSC && TwoJets) h_goodSCPt_Endcap_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+
 	     if (TwoSC && TwoJets) {
 	       h_goodSCPt_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 	       h_goodSCEta_2SC2Jets->Fill(scEta[v_idx_sc_iso[isc]]);
+	       h_goodSC_ST->Fill(calc_sT);
 	     }
 	   }
 
@@ -564,28 +586,38 @@ void analysisClass::Loop()
    h_dR_JetSC_EcalIso->Write();
    h_NisoSC->Write();
    h_goodEleSCPt->Write();
-   h_goodEleSCPt_Barrel->Write();
    h_goodEleSCEta->Write();
+   h_goodEleSCPt_2SC2Jets->Write();
+   h_goodEleSCEta_2SC2Jets->Write();
+   h_goodEleSCPt_Barrel->Write();
    h_goodEleSCPt_Barrel_2SC->Write();
    h_goodEleSCPt_Barrel_2Jets->Write();
    h_goodEleSCPt_Barrel_2Jets_wSC->Write();
-   h_goodEleSCPt_2SC2Jets->Write();
    h_goodEleSCPt_Barrel_2SC2Jets->Write();
-   h_goodEleSCEta_2SC2Jets->Write();
+   h_goodEleSCPt_Endcap->Write();
+   h_goodEleSCPt_Endcap_2SC->Write();
+   h_goodEleSCPt_Endcap_2Jets->Write();
+   h_goodEleSCPt_Endcap_2Jets_wSC->Write();
+   h_goodEleSCPt_Endcap_2SC2Jets->Write();
    h_goodEle_ST->Write();
    h_goodEle_SCEcalIso->Write();
    h_goodEle_SCEcalIso_PASS->Write();
    h_goodEleSCPt_PASS->Write();
    h_goodEleSCPt_PASSMee->Write();
    h_goodSCPt->Write();
-   h_goodSCPt_Barrel->Write();
    h_goodSCEta->Write();
+   h_goodSCPt_2SC2Jets->Write();
+   h_goodSCEta_2SC2Jets->Write();
+   h_goodSCPt_Barrel->Write();
    h_goodSCPt_Barrel_2SC->Write();
    h_goodSCPt_Barrel_2Jets->Write();
    h_goodSCPt_Barrel_2Jets_wSC->Write();
-   h_goodSCPt_2SC2Jets->Write();
    h_goodSCPt_Barrel_2SC2Jets->Write();
-   h_goodSCEta_2SC2Jets->Write();
+   h_goodSCPt_Endcap->Write();
+   h_goodSCPt_Endcap_2SC->Write();
+   h_goodSCPt_Endcap_2Jets->Write();
+   h_goodSCPt_Endcap_2Jets_wSC->Write();
+   h_goodSCPt_Endcap_2SC2Jets->Write();
    h_goodSC_ST->Write();
    h_goodSC_EcalIso->Write();
    h_goodSC_EcalIso_PASS->Write();
