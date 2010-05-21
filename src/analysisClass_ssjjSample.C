@@ -349,16 +349,16 @@ void analysisClass::Loop()
 	 h_NscISO->Fill(v_idx_sc_iso.size());
 
 	 double probSC1 = 0, probSC2 = 0;
-	 if (fabs(scEta[v_idx_sc_iso[0]])<1.442) probSC1 = 0.0023;
-	 if (fabs(scEta[v_idx_sc_iso[0]])>1.56) probSC1 = 0.05;
-	 if (fabs(scEta[v_idx_sc_iso[1]])<1.442) probSC2 = 0.0023;
-	 if (fabs(scEta[v_idx_sc_iso[1]])>1.56) probSC2 = 0.05;
+	 double BarrelCross = -0.001437;
+	 double BarrelSlope = 0.000104;
+	 double EndcapCross = 0.014;
+	 double EndcapSlope = 0.000283;
+
+	 if (fabs(scEta[v_idx_sc_iso[0]])<1.442) probSC1 = BarrelCross + BarrelSlope*scPt[v_idx_sc_iso[0]];
+	 if (fabs(scEta[v_idx_sc_iso[0]])>1.56) probSC1 = EndcapCross + EndcapSlope*scPt[v_idx_sc_iso[0]] ;
+	 if (fabs(scEta[v_idx_sc_iso[1]])<1.442) probSC2 = BarrelCross + BarrelSlope*scPt[v_idx_sc_iso[1]];
+	 if (fabs(scEta[v_idx_sc_iso[1]])>1.56) probSC2 = EndcapCross + EndcapSlope*scPt[v_idx_sc_iso[1]];
       
-// 	 probSC1 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[0]]);
-// 	 probSC2 = -0.000308 + (0.0000448*scPt[v_idx_sc_iso[1]]);
-// 	 double probSC1 = 0.01, probSC2 = 0.01;
-
-
 	 h_probPt1stSc->Fill(scPt[v_idx_sc_iso[0]],probSC1+probSC2);
 	 h_probSt->Fill(calc_sT,probSC1+probSC2);
 
