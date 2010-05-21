@@ -114,7 +114,7 @@ void analysisClass::Loop()
      Long64_t ientry = LoadTree(jentry);
      if (ientry < 0) break;
      nb = fChain->GetEntry(jentry);   nbytes += nb;
-     if(jentry < 10 || jentry%1000 == 0) std::cout << "analysisClass::Loop(): jentry = " << jentry << std::endl;   
+     if(jentry < 10 || jentry%10000 == 0) std::cout << "analysisClass::Loop(): jentry = " << jentry << std::endl;   
      // if (Cut(ientry) < 0) continue;
 
      ////////////////////// User's code starts here ///////////////////////
@@ -178,8 +178,8 @@ void analysisClass::Loop()
      int idx_scHighestPt = -1;
      int idx_scNextPt = -1;
     for(int isc=0;isc<scCount;isc++){
-      if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
       if (scHoE[isc]>0.05) continue;
+      if ( scPt[isc] < getPreCutValue1("ele_PtCut") ) continue;
       if (scSigmaIEIE[isc]>0.0275) continue;
       double scEt = scPt[isc];
       if (scHEEPEcalIso[isc]> (6+(0.01*scEt))) continue;
@@ -214,6 +214,7 @@ void analysisClass::Loop()
       if (fabs(scEta[isc])<1.44 && scHEEPTrkIso[isc]<7.5) scPassTrkIso = true;
       if (fabs(scEta[isc])>1.56 && scHEEPTrkIso[isc]<15) scPassTrkIso = true;
       if (scPassHoE && scPassSigmaEE && scPassEcalIso && scPassTrkIso ){
+	//if (scPassHoE){
 	v_idx_sc_iso.push_back(isc);
       }
     }
@@ -515,17 +516,22 @@ void analysisClass::Loop()
 	     h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 	     h_goodEleSCEta->Fill(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC) h_goodEleSCPt_Barrel_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoJets) h_goodEleSCPt_Barrel_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Barrel_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45 && TwoSC && TwoJets) h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     bool Barrel = false;
+	     bool Endcap = false;
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<1.45) Barrel = true;
+	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])<2.5) Endcap = true;
 
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56) h_goodEleSCPt_Endcap->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoSC) h_goodEleSCPt_Endcap_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoJets) h_goodEleSCPt_Endcap_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Endcap_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
-	     if (fabs(eleSCEta[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]])>1.56 && TwoSC && TwoJets) h_goodEleSCPt_Endcap_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Barrel) h_goodEleSCPt_Barrel->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Barrel && TwoSC) h_goodEleSCPt_Barrel_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Barrel && TwoJets) h_goodEleSCPt_Barrel_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Barrel && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Barrel_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Barrel && TwoSC && TwoJets) h_goodEleSCPt_Barrel_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+
+	     if (Endcap) h_goodEleSCPt_Endcap->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Endcap && TwoSC) h_goodEleSCPt_Endcap_2SC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Endcap && TwoJets) h_goodEleSCPt_Endcap_2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Endcap && (v_idx_jet_PtCut_noOverlapEle.size()>1) ) h_goodEleSCPt_Endcap_2Jets_wSC->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
+	     if (Endcap && TwoSC && TwoJets) h_goodEleSCPt_Endcap_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
 
 	     if (TwoSC && TwoJets) {
 	       h_goodEleSCPt_2SC2Jets->Fill(eleSCPt[v_idx_ele_PtCut_ID_ISO_noOverlap[iele]]);
@@ -539,17 +545,22 @@ void analysisClass::Loop()
 	     h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
 	     h_goodSCEta->Fill(scEta[v_idx_sc_iso[isc]]);
 
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoJets) h_goodSCPt_Barrel_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Barrel_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45 && TwoSC && TwoJets) h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     bool Barrel = false;
+	     bool Endcap = false;
+	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.45) Barrel = true;
+	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && fabs(scEta[v_idx_sc_iso[isc]])<2.5) Endcap = true;
 
-	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56) h_goodSCPt_Endcap->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoSC) h_goodSCPt_Endcap_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoJets) h_goodSCPt_Endcap_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Endcap_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
-	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && TwoSC && TwoJets) h_goodSCPt_Endcap_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Barrel) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Barrel && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Barrel && TwoJets) h_goodSCPt_Barrel_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Barrel && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Barrel_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Barrel && TwoSC && TwoJets) h_goodSCPt_Barrel_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+
+	     if (Endcap) h_goodSCPt_Endcap->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Endcap && TwoSC) h_goodSCPt_Endcap_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Endcap && TwoJets) h_goodSCPt_Endcap_2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Endcap && (v_idx_jet_PtCut_noOverlapEle.size()>1)) h_goodSCPt_Endcap_2Jets_wSC->Fill(scPt[v_idx_sc_iso[isc]]);
+	     if (Endcap && TwoSC && TwoJets) h_goodSCPt_Endcap_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
 
 	     if (TwoSC && TwoJets) {
 	       h_goodSCPt_2SC2Jets->Fill(scPt[v_idx_sc_iso[isc]]);
