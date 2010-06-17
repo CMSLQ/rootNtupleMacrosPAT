@@ -34,6 +34,8 @@ void analysisClass::Loop()
    //Combinations
    TH1F *h_Mej = new TH1F ("Mej","Mej",200,0,2000);  h_Mej->Sumw2();
    TH1F *h_dPhi_JetSC = new TH1F("dPhi_JetSC","dPhi_JetSC",330,0,3.3); h_dPhi_JetSC->Sumw2();
+   TH1F *h_dPhi_JetSC_Barrel = new TH1F("dPhi_JetSC_Barrel","dPhi_JetSC_Barrel",330,0,3.3); h_dPhi_JetSC_Barrel->Sumw2();
+   TH1F *h_dPhi_JetSC_Endcap = new TH1F("dPhi_JetSC_Endcap","dPhi_JetSC_Endcap",330,0,3.3); h_dPhi_JetSC_Endcap->Sumw2();
    TH1F *h_dR_JetSC = new TH1F("dR_JetSC","dR_JetSC",500,0,5.0); h_dR_JetSC->Sumw2();
    TH1F *h_dR_JetSC_2Jets = new TH1F("dR_JetSC_2Jets","dR_JetSC_2Jets",500,0,5.0); h_dR_JetSC_2Jets->Sumw2();
    TH2F *h_dR_JetSC_EcalIso = new TH2F("dR_JetSC_EcalIso","dR_JetSC_EcalIso",500,0,5.0,500,0,10); h_dR_JetSC->Sumw2();
@@ -519,10 +521,9 @@ void analysisClass::Loop()
      }
 
      //// Fill fake rate plots
-     if (MassEE>80 && MassEE<100)continue;  //get rid of Zs
+     if (MassEE>60 && MassEE<120)continue;  //get rid of Zs
 	 for(int isc=0;isc<v_idx_sc_iso.size();isc++)
 	   {
-	     bool back2back = false;
 	     TVector3 sc_vec;
 	     sc_vec.SetPtEtaPhi(scPt[v_idx_sc_iso[isc]],
 			   scEta[v_idx_sc_iso[isc]],
@@ -536,18 +537,21 @@ void analysisClass::Loop()
 	       double deltaPhi=fabs(jet_vec.DeltaPhi(sc_vec));
 	       if (deltaPhi>dPhi_SC_Jet)dPhi_SC_Jet=deltaPhi;
 	     }
-	     h_dPhi_JetSC->Fill(dPhi_SC_Jet);	
-	     if (dPhi_SC_Jet<2.6) continue;
-	     back2back = true;
-
-	     h_goodSC_EcalIso->Fill(scHEEPEcalIso[v_idx_sc_iso[isc]]);
-	     h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
-	     h_goodSCEta->Fill(scEta[v_idx_sc_iso[isc]]);
 
 	     bool Barrel = false;
 	     bool Endcap = false;
 	     if (fabs(scEta[v_idx_sc_iso[isc]])<1.445) Barrel = true;
 	     if (fabs(scEta[v_idx_sc_iso[isc]])>1.56 && fabs(scEta[v_idx_sc_iso[isc]])<2.5) Endcap = true;
+
+	     if (Barrel) h_dPhi_JetSC_Barrel->Fill(dPhi_SC_Jet);
+	     if (Endcap) h_dPhi_JetSC_Endcap->Fill(dPhi_SC_Jet);
+
+	     if (dPhi_SC_Jet<3.0) continue;
+	     h_dPhi_JetSC->Fill(dPhi_SC_Jet);	
+
+	     h_goodSC_EcalIso->Fill(scHEEPEcalIso[v_idx_sc_iso[isc]]);
+	     h_goodSCPt->Fill(scPt[v_idx_sc_iso[isc]]);
+	     h_goodSCEta->Fill(scEta[v_idx_sc_iso[isc]]);
 
 	     if (Barrel) h_goodSCPt_Barrel->Fill(scPt[v_idx_sc_iso[isc]]);
 	     if (Barrel && TwoSC) h_goodSCPt_Barrel_2SC->Fill(scPt[v_idx_sc_iso[isc]]);
@@ -582,7 +586,7 @@ void analysisClass::Loop()
 		   idx_HEEPele = iele;
 		 }
 	       }
-	     if (deltaR_SC_ele<0.3){
+	     if (deltaR_SC_ele<0.5){
 		h_goodEle_SCEcalIso->Fill(eleSCHEEPEcalIso[v_idx_ele_PtCut_HEEP[idx_HEEPele]]);
 		h_goodEleSCPt->Fill(eleSCPt[v_idx_ele_PtCut_HEEP[idx_HEEPele]]);
 		h_goodEleSCEta->Fill(eleSCEta[v_idx_ele_PtCut_HEEP[idx_HEEPele]]);
@@ -620,6 +624,8 @@ void analysisClass::Loop()
    //////////write histos 
    h_Mej->Write();
    h_dPhi_JetSC->Write();
+   h_dPhi_JetSC_Barrel->Write();
+   h_dPhi_JetSC_Endcap->Write();
    h_dR_JetSC->Write();
    h_dR_JetSC_2Jets->Write();
    h_dR_JetSC_EcalIso->Write();
